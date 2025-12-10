@@ -1,0 +1,30 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$font-size                 : 14px * 2;
+// $edge-margin               : 16px;
+
+$color-bg-gray             : #f5f5f5;
+$color-gray                : #818181;
+$color-price-dollar        : rgb(143, 142, 142);
+$color-goods_title         : rgb(116, 115, 115);
+$color-brand-primary       : #ff4949 !default;
+$color-brand-accent        : #f76e6e !default;
+$color-brand-accent-light  : #787878 !default;
+$color-brand-primary-text  : #ffffff !default;
+$color-brand-accent-text   : #ffffff !default;
+
+$item-border-radius        : 8px;
+$tabs-height               : 75px !default;
+$navigate-height           : 0 !default;
+$searchbar-height          : 65px !default;
+$toolbar-height            : 100px !default;
+// $tabbar-height             : 100px !default; #780b35
+
+$at-tab-bar-color          : #818181 !default;
+$at-tab-bar-color-active   : $color-brand-primary !default;
+$at-tab-bar-font-size      : 22px !default;
+$at-tab-bar-icon-font-size : 42px !default;
+$at-button-height          : 80px !default;

@@ -1,0 +1,89 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+@mixin flex_JC_SB_AC {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cpn-messageDetail {
+  padding: 30px;
+  box-sizing: border-box;
+  .date {
+    width: 100%;
+    text-align: center;
+    font-size: 24px;
+    color: #858b9c;
+  }
+  .box {
+    margin-top: 30px;
+    background: #fff;
+    padding-left: 32px;
+    padding-right: 32px;
+    box-sizing: border-box;
+    box-shadow: 0px 3px 5px 0px #e2e4ea;
+    border-radius: 8px;
+    width: 686px;
+    .top {
+      @include flex_JC_SB_AC;
+      padding: 23px;
+      border-bottom: 1px solid #e2e4ea;
+      .titleBox {
+        display: flex;
+        font-size: 30px;
+        font-weight: 500;
+        color: #666f83;
+        .title{
+          max-width: 500px;
+          @include  text-overflow;
+        }
+        .is_read{
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          background: red;
+          margin: auto 0;
+          margin-left: 15px;
+        }
+      }
+      .iconfont{
+        color:#666F83;
+        font-size:24px;
+      }
+    }
+    .list {
+      padding: 20px 22px;
+      .item {
+        @include flex_JC_SB_AC;
+        font-size: 24px;
+        line-height: 42px;
+        .title {
+          width: 110px;
+          padding-right: 50px;
+          color: #666f83;
+        }
+        .content {
+          @include text-overflow;
+          flex: 1;
+          text-align: left;
+          color: #111a34;
+          &.order {
+            @include text-overflow;
+            @include flex_JC_SB_AC;
+            .subtitle {
+              max-width: 200px;
+              @include text-overflow;
+            }
+            .info {
+              flex: 1;
+              //   width: 100%;
+              text-align: left;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,130 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+@mixin flex_JC_SB_AC {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cpn-modal {
+  .header{
+    background: linear-gradient(180deg, #FFFFFF 0%, #D4DACA 100%);
+    border-radius: 8px 8px 0px 0px;
+    padding-top: 0;
+    .imgBox{
+      width: 347px;
+      margin: 0 auto;
+      .img{
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+    .text{
+      margin-top: 20px;
+      font-size: 36px;
+      box-sizing: border-box;
+      .tips{
+        color: #666F83;
+        font-size: 28px;
+      }
+    }
+
+
+  }
+  .content_{
+    background: #f5f5f5;
+    min-height: 600px;
+    overflow: hidden;
+    padding: 0;
+    padding-bottom: 30px;
+    .list{
+      height: 234px;
+      background: #D4DACA;
+    }
+    .nav{
+      width: 570px;
+      margin: 0 auto;
+      height: 10px;
+      position: relative;
+      top:0;
+      .img{
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .detail{
+        position: relative;
+        top:-10px;
+        width: 92%;
+        margin: 0 auto;
+
+        border-radius: 0px 0px 16px 16px;
+
+        background-color: #fff;
+        .successBox{
+          padding: 26px 71px;
+          box-sizing: border-box;
+        }
+        .failBox{
+          padding: 10px 30px;
+          box-sizing: border-box;
+          margin-bottom: 30px;
+          .box{
+            @include page-scroll(20px,0);
+            // padding:50px 50px ;
+            position: relative;
+            box-sizing: border-box;
+            height:500px;
+            overflow-y: scroll;
+          }
+
+          // overflow-y: scroll;
+          .title{
+            font-size: 28px;
+            font-weight: 500;
+          }
+        }
+        .imgBox{
+          img{
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+            max-height: 460px;
+
+          }
+        }
+        .title{
+          margin-top: 20px;
+          color: #111A34;
+          line-height: 36px;
+          font-size: 28px;
+          @include multi-ellipsis(2)
+        }
+        .type{
+          margin-top: 10px;
+          color: #858B9C;
+          font-size: 24px;
+        }
+      }
+
+    }
+
+  }
+  .bottom{
+    .btn{
+      margin-top: 0;
+      color: #4980FF;
+    }
+  }
+  .fail_header{
+    background: linear-gradient(180deg, #FFFFFF 0%, #DACACA 100%) !important;
+  }
+  .fail{
+    background:#DACACA !important ;
+  }
+
+}

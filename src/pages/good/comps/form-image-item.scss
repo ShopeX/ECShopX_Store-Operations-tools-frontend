@@ -1,0 +1,96 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+.form-image-item{
+
+    min-height:106px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-left:19px;
+    padding-top:32px;
+    padding-bottom:32px;
+
+    &:after{
+        display: block;
+        content:'';
+        position: absolute;
+        background-color: #E2E4EA;
+        height:1px;
+        bottom:0;
+        left:0;
+        right:0;
+    }
+
+    &-required{
+        position: absolute;
+        left:0;
+        top:30px;
+        color: #FF5257;
+        font-size: 28px;
+    }
+
+    &-label{
+        font-size: 28px;
+        color: #666F83;
+    }
+
+    &-desc{
+        color: #C5CAD5;
+        font-size: 24px;
+    }
+
+    &-main{
+
+        display: flex;
+        flex-wrap: wrap;
+
+        .add,.uploader{
+            width: 32%;
+            height: 210px;
+            background: #F9FAFB;
+            border-radius: 8px;
+            border: 1px solid #E2E4EA;
+            @include flex-center;
+            margin-top: 24px;
+            flex-shrink: 0;
+            flex-grow:0;
+            margin-right:6px;
+
+            .iconfont{
+                font-size:60px;
+                color:rgba(102, 111, 131, 0.85);
+            }
+        }
+
+        .uploader{
+            position: relative;
+            &-image{
+                height: 100%;
+                width: 100%;
+            }
+
+            &-close{
+                position: absolute;
+                top: 6PX;
+                right: 6PX;
+                width: 20PX;
+                height: 20PX;
+                background-color: #999;
+                opacity: .8;
+                @include flex-center;
+                border-radius: 50%;
+
+                .iconfont{
+                    font-size:12px;
+                    color:white;
+                }
+            }
+        }
+    }
+
+
+}

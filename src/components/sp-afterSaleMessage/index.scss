@@ -1,0 +1,27 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.cpn-AfterSaleMessage{
+  padding: 40px 80px 40px 30px;
+  .box{
+    display: flex;
+    justify-content: space-between;
+    .status{
+      color: #fff;
+      .message{
+        font-size: 52px;
+        font-weight: 400;
+
+      }
+      .tips{
+        font-size:28px ;
+        font-weight: 300;
+      }
+    }
+    .icon{
+      font-size: 60px;
+    }
+  }
+}

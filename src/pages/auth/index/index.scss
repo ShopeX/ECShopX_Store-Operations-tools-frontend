@@ -1,0 +1,46 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.page-auth-index {
+  .welcome-scrollview {
+    @include page-scroll(0, 120px);
+    background: #fff;
+  }
+  .title {
+    margin-top: 100px;
+    color: #4980FF;
+    font-size: 68px;
+    text-align: center;
+  }
+  .sub-title {
+    margin-top: 40px;
+    color: #326CF1;
+    font-size: 30px;
+    text-align: center;
+  }
+  .logo-con {
+    margin-top: 80px;
+    position: relative;
+    .m-bk {
+      width: 750px;
+      height: 480px;
+    }
+    .s-bk {
+      width: 220px;
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  .btn-con {
+    text-align: center;
+    margin-top: 60px;
+    .btn-img {
+      width: 600px;
+      height: 80px;
+    }
+  }
+}

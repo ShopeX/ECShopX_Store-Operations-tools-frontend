@@ -1,0 +1,296 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.sp-page-action-buttons {
+
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+
+
+  .common-button {
+    display: inline-flex;
+    margin-left: 15px;
+    white-space: nowrap;
+    align-items: center;
+  }
+
+  .cancel-action {
+    z-index: 100;
+
+    .note {
+      .content {
+        .at-textarea {
+          border: none;
+          height: 500px
+        }
+
+        .at-textarea__textarea {
+          height: 70%;
+        }
+
+        .taro-textarea {
+          resize: none;
+          font-size: $textarea-font-size;
+        }
+
+        .taro-textarea::-webkit-input-placeholder {
+          font-size: $textarea-placeholder-font-size;
+          color: #C5CAD5;
+        }
+      }
+    }
+  }
+
+  .action-modal {
+    z-index: 500;
+    .at-modal__container {
+      top: 40%;
+      border-radius: 8px;
+
+      .content {
+        height: 160px;
+        @include hairline2(rgba(0, 0, 0, 0.1),3, bottom);
+
+        &.cancelOrder,
+        &.confirmContent {
+          height: 205px;
+
+
+        }
+
+        &.verification {
+          height: 410px;
+          position: relative;
+
+          .icon-guanbi-01{
+            position: absolute;
+            font-size: 32px;
+            top:28px;
+            right:28px;
+            color:#858B9C;
+          }
+        }
+
+        .phoneContent {
+
+          @include flexbox;
+          height: 100%;
+
+          .item {
+            font-size: 40px;
+            font-weight: 500;
+          }
+
+          .item1 {
+            color: #111A34;
+          }
+
+          .item2 {
+            color: var(--color-primary);
+            margin-left: 10px;
+          }
+
+        }
+
+        .cancelContent,
+        .confirmContent {
+          height: 100%;
+          padding-top: 60px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          &.confirmDelivery{
+            margin-bottom: 60px;
+          }
+
+          .item1 {
+            font-size: 40px;
+            font-weight: 400;
+            color: #111A34;
+          }
+
+          .item2 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #858B9C;
+          }
+        }
+
+        .verificationContent {
+          padding-top: 60px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .item1 {
+            font-size: 40px;
+            font-weight: 400;
+            color: #111A34;
+          }
+
+          .item2 {
+            font-size: 28px;
+            font-weight: 400;
+            color: #858B9C;
+          }
+
+          .inputwrapper {
+            margin-top: 60px;
+            padding: 0 60px;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: relative;
+
+            .input {
+              .at-input__input {
+                padding-right: 0;
+              }
+
+              &.at-input:after {
+                border: none;
+              }
+
+              .weui-input {
+                color: #111A34;
+                font-size: 50px;
+                letter-spacing: 60px;
+                color: transparent;
+              }
+            }
+
+            .bottom_line——wrapper {
+
+              position: absolute;
+              bottom: 0;
+              display: flex;
+              left: 60px;
+              right: 60px;
+              height: 10px;
+              justify-content: space-between;
+
+              &.hasError{
+                .bottom_line{
+                  background-color: $danger-color;
+
+                  &.active {
+                    background-color: $danger-color;
+                  }
+                }
+                .error{
+                  color:$danger-color;
+                  font-size: 24px;
+                  font-weight: 400;
+                  position: absolute;
+                  left:0;
+                  bottom:-38px;
+                }
+              }
+
+              .bottom_line {
+
+                height: 2px;
+                background-color: #C5CAD5;
+                flex-basis: 66px;
+                position: relative;
+                text-align: center;
+
+                &.active {
+                  background-color: #111A34;
+                }
+
+                .number {
+                  position: relative;
+                  color: #111A34;
+                  bottom: 80px;
+                  font-size: 50px;
+                }
+
+              }
+
+            }
+
+            // .inputitem{
+            //     &:not(&:nth-last-child(1)){
+            //         margin-right: 18px;
+            //     }
+            //     .at-input__input{
+            //         padding-right: 0;
+            //     }
+            //     .weui-input{
+            //         color:#111A34;
+            //         font-size: 50px;
+            //     }
+            // }
+
+          }
+
+          .bottom {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding: 0 60px;
+            align-items: center;
+
+            .wrapper-bottom {
+
+              display: flex;
+              align-items: center;
+
+              .iconfont {
+                font-size: 28px*1.4;
+                color: #4980FF;
+              }
+
+              .text {
+                font-size: 28px;
+                color: #2F86F6;
+                font-weight: 400;
+                margin-left: 10px;
+              }
+            }
+          }
+        }
+
+      }
+
+      .action {
+        height: 100px;
+
+        .actionContent {
+          display: flex;
+          height: 100%;
+
+          .item {
+            flex: 1;
+            @include flexbox;
+            font-size: 36px;
+            font-weight: 500;
+          }
+
+          .item1,
+          .cancelitem1,
+          .confirmitem1 {
+            @include hairline2(rgba(0, 0, 0, 0.1),3,right);
+            color: #666F83;
+          }
+
+          .item2,
+          .confirmitem2 {
+            color: var(--color-primary);
+          }
+
+          .cancelitem2 {
+            color: #FF5257;
+          }
+        }
+      }
+    }
+  }
+
+}

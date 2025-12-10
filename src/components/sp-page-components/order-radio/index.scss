@@ -1,0 +1,33 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.sp-page-order-radio{
+    @include flexbox;
+
+    .item{
+        width: 136px;
+        height: 56px;
+        border: 1px solid #C5CAD5;
+        font-weight: 400;
+        font-size: 24px;
+        color: #858B9C;
+        @include flexbox;
+
+        &.active{
+            border: 1px solid #4980FF;
+            background: #D8E9FF;
+            color:#4980FF;
+            z-index: 1;
+        }
+    }
+
+    .leftTitle{
+
+    }
+
+    .rightTitle{
+        margin-left:-1px;
+    }
+}

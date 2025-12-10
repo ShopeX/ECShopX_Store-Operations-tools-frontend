@@ -1,0 +1,34 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.page-messageDetail{
+  @include page-scroll(20px,60px);
+
+  .tips{
+
+    padding: 10px 40px;
+    display: flex;
+    justify-content: space-between;
+    .tip{
+      font-size: 28px;
+      color:#858B9C;
+      .icon-shaixuan1{
+        background-color: #E2E4EA;
+        border-radius: 50%;
+        font-size: 32px;
+        margin-right: 8px;
+      }
+    }
+    .clearRead{
+      color: #4980FF;
+      font-size: 28px;
+      .icon-qingchu{
+        font-size: 32px;
+        margin-right: 8px;
+      }
+    }
+
+  }
+}

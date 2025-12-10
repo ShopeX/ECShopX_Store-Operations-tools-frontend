@@ -1,0 +1,144 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$searchInputHeight:70px;
+
+$tabbarHeight:100px;
+
+$buttonHeight:120px;
+
+$filterHeight:100px;
+
+.page-good-list {
+
+  background: #F9FAFB;
+  //background: #fff;
+  min-height: 100vh;
+
+  .filterContent {
+    .comp-order-list-filterBlock {
+      padding: 0 40px;
+      height: $filterHeight;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      background-color: white;
+
+      .title {
+        display: flex;
+        align-items: center;
+
+        .icon1 {
+          width: 30px;
+          height: 30px;
+          background: #E2E4EA;
+          border-radius: 50%;
+          @include flexbox();
+
+          .iconfont {
+            color: #858B9C;
+            position: relative;
+            font-size: 26px;
+          }
+        }
+
+        .text {
+          font-weight: 400;
+          font-size: 28px;
+          color: #858B9C;
+        }
+
+      }
+
+      .filterTip {
+        display: flex;
+        align-items: center;
+
+        .iconfont {
+          color: var(--color-primary);
+          font-size: 46px;
+          font-weight: 500;
+        }
+
+        .text {
+          color: var(--color-primary);
+          font-size: 28px;
+          margin-left: 1px;
+        }
+      }
+
+    }
+
+
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  &-input {
+    padding: 10px 20px;
+    padding-top:20px;
+    background-color: #fff;
+  }
+
+  &-tab{
+    height:$tabbarHeight;
+  }
+
+  &-list {
+    @include page-scroll($searchInputHeight+$tabbarHeight+$filterHeight+30, $buttonHeight);
+    z-index:100;
+    padding-bottom: 20px;
+
+    &.show-buttonsaction{
+      transform: none;
+      -webkit-transform: none;
+      -moz-transform: none;
+      -o-transform: none;
+      -ms-transform: none;
+    }
+
+    .comp-item{
+      margin-top: 24px;
+    }
+
+    .common-button{
+      display: inline-flex;
+      height: 60px!important;
+
+      &:not(:last-child){
+        margin-right: 20px;
+      }
+
+    }
+
+  }
+  &-addbutton{
+    position: absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+    border-radius: 0px 2px 2px 0px;
+    background-color: white;
+    height:$buttonHeight;
+    @include flex-center;
+
+    .iconfont{
+      font-size:40px;
+      color:var(--color-primary);
+    }
+    .text{
+      margin-left:16px;
+      font-weight: 500;
+      color: #4980FF;
+      font-size: 36px;
+      text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+    }
+  }
+
+}

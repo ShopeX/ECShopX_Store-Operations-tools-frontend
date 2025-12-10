@@ -1,0 +1,27 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.sp-component-icon-footer{
+    padding:22px 0px 22px;
+    border-top: 1px solid #E2E4EA;
+    box-sizing: border-box;
+
+    &_content{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .icon{
+            font-size: 40px;
+            color:var(--color-primary);
+            margin-right: 4px;
+        }
+        .text{
+            font-size: 28px;
+            font-weight: 500;
+            color:var(--color-primary);
+        }
+    }
+}

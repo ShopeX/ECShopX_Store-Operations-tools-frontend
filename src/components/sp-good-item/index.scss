@@ -1,0 +1,126 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+.sp-good-item{
+
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+
+    &-image{
+        width: 160px;
+        height: 160px;
+        //box-shadow: 0px 2px 4px 0px #E2E4EA;
+        border-radius: 8px;
+        border: 1px solid #E2E4EA;
+        flex-shrink: 0;
+        overflow: hidden;
+
+        .img{
+            width: 100%;
+            height:100%;
+        }
+
+    }
+
+    &-content{
+
+        flex:1;
+        flex-shrink: 0;
+        margin-left:24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &_name{
+            // text-shadow: 0px 2px 4px #E2E4EA;
+            font-weight: 500;
+            color: #111A34;
+            font-size: $font-size-default * 1.1;
+            @include multi-ellipsis(1);
+        }
+
+        &_spec{
+            font-size: 24px;
+            font-weight: 400;
+            color: #858B9C;
+            min-height: 36px;
+            flex:1;
+            // text-shadow: 0px 2px 4px #E2E4EA;
+            // margin-top: 6px;
+        }
+
+        &_number{
+            font-weight: 400;
+            color: #858B9C;
+            font-size: 24px;
+
+            // text-shadow: 0px 2px 4px #E2E4EA;
+        }
+
+    }
+
+    &-rightextra{
+
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-between;
+        // padding-bottom:16px;
+
+        &.renderInputNumber{
+            justify-content: flex-end;
+        }
+
+        &-goodnumber{
+            font-size: 24px;
+            color:#111A34;
+
+            .number-prefix{
+                font-size: 0.7em;
+            }
+
+            .number{
+                font-weight: 500;
+            }
+        }
+
+        &-inputnumber{
+            max-width: 150px;
+            min-height: 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+
+            .no-number,.has-number{
+                color:var(--color-primary);
+
+                &.error{
+                    color:$danger-color;
+                }
+            }
+
+            .error-number{
+                color:$danger-color;
+            }
+
+            .no-number,.has-number,.error-number{
+                font-size: 24px;
+                font-weight: 400;
+            }
+
+        }
+    }
+    .prescription-drug{
+        font-size: 24px;
+        color: var(--color-primary);
+        padding: 0 4px;
+        border-radius: 4px;
+        border: 1px solid var(--color-primary);
+        line-height: 34px;
+        margin-right: 8px;
+      }
+}

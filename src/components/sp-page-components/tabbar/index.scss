@@ -1,0 +1,91 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$tabbarHeight:100px;
+
+.sp-component-tabbar {
+
+  height: $tabbarHeight;
+  position: relative;
+
+  .left {
+    position: absolute;
+    left: 0;
+    width: 40px;
+    top: 0;
+    bottom: 0;
+    z-index: 200;
+
+    // &:after{
+    //   position: absolute;
+    //   content: '';
+    //   display: block;
+    //   width:1px;
+    //   height:38px;
+    //   top:31px;
+    //   right:5px;
+    //   // box-shadow: -3px 0 3px 0 #E2E4EA;
+    //   box-shadow: 2px 0 3px 0 #ced0d4;
+    // }
+  }
+
+  .right {
+    position: absolute;
+    right: 0;
+    width: 40px;
+    top: 0;
+    bottom: 0;
+    z-index: 200;
+
+    &:after{
+      position: absolute;
+      content: '';
+      display: block;
+      width:1px;
+      height:38px;
+      top:31px;
+      left:5px;
+      // box-shadow: -3px 0 3px 0 #E2E4EA;
+      box-shadow: -2px 0 3px 0 #ced0d4;
+    }
+  }
+
+  .at-tabs {
+    position: absolute;
+    background: #FFFFFF;
+    box-shadow: 0px 3px 5px 0px #E2E4EA;
+    height: $tabbarHeight;
+    padding-left: 37px;
+    padding-right: 37px;
+  }
+
+  .at-tabs .at-tabs__item {
+    height: $tabbarHeight;
+    line-height: $tabbarHeight;
+    font-weight: 400;
+    color: #666F83;
+    font-size: 28px;
+    margin: 0 24px;
+    font-weight: 500;
+
+    &:nth-child(1){
+      margin-left: 0;
+    }
+
+    &:last-child{
+      margin-right: 48px;
+    }
+    &--active {
+      color: var(--color-primary);
+    }
+
+    .at-tabs__item-underline {
+      background-color: var(--color-primary);
+      width: 100%;
+      left: 0%;
+      height:6px;
+    }
+  }
+}

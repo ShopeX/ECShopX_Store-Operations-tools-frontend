@@ -1,0 +1,59 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.page-logisticsInfo {
+  position: absolute;
+  min-height: 100%;
+  width: 100%;
+  background: #f9fafb;
+  .box{
+    padding-top: 30px;
+  }
+  .timeline {
+    padding: 50px 30px;
+    .at-timeline-item__dot::after {
+      background: #c5cad5;
+      border: none;
+      height: 16px;
+      width: 16px;
+    }
+    .at-timeline-item__dot,
+    .at-timeline-item__icon {
+      background: none;
+      top:35px
+    }
+    .at-timeline-item__tail {
+      top:55px;
+      bottom: -55px;
+      background: #f9fafb;
+    }
+    .at-timeline-item__content-item {
+      @include text-overflow;
+      font-size: 28px;
+      padding:0 20px;
+      color: #858b9c;
+      height: 90px;
+      background: #ffffff;
+      border-radius: 16px;
+      line-height: 90px;
+      margin-bottom: 24px;
+      box-sizing: border-box;
+    }
+    .at-timeline-item {
+      position: relative;
+      padding: 0;
+  }
+  }
+  .time-line-box{
+    width: 100%;
+    padding: 6px 40px;
+    box-sizing: border-box;
+    margin-top: 50px;
+
+  }
+  .time-line-item:last-child{
+    border: none !important;
+  }
+}

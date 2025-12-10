@@ -1,0 +1,25 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+@import './variables';
+
+@keyframes sp-anim-popup {
+  0% {
+    transform: translate3D(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3D(0, 0, 0);
+  }
+}
+
+@keyframes sp-anim-fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

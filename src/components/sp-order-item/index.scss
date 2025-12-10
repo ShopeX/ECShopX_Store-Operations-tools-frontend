@@ -1,0 +1,141 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+@mixin cardShadow {
+  background: #FFFFFF;
+  box-shadow: 0px 2px 4px 0px #E2E4EA;
+}
+
+.sp-order-item {
+  padding: 24px 32px;
+  margin-bottom: 24px;
+  @include cardShadow;
+
+  .margin-left-20{
+    margin-left: 20px;
+  }
+
+  &-header {
+    margin-bottom: 24px;
+    .order-header {
+      position: relative;
+
+      .merchant-tag{
+        padding: 0 2px;
+        box-sizing: border-box;
+        color: var(--color-primary);
+        border: solid 1px var(--color-primary);
+        font-size: 20px;
+        border-radius: 5px;
+        margin: 0 6px 5px 0;
+      }
+
+      .order-no {
+        display: flex;
+        align-items: center;
+
+        .no {
+          font-size: 24px;
+          color: #111A34;
+        }
+
+        .copy {
+          font-size: 24px;
+          color: #4980FF;
+          margin-left: 18px;
+        }
+      }
+
+      .order-time {
+        font-size: 24px;
+        line-height: 24px;
+        color: #858B9C;
+      }
+
+    }
+  }
+
+  &-body {
+    .goodItem {
+      margin-bottom: 16px;
+    }
+  }
+
+  &-extra-list {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+
+    .distribution {
+      font-weight: 400;
+      color: #858B9C;
+      font-size: 24px;
+      flex-basis: 200px;
+      flex-shrink: 0;
+    }
+
+    .desc {
+      font-weight: 500;
+      color: #111A34;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+
+      &-title{
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &-extra-sales-list{
+    margin-top: 16px;
+
+    .item{
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom:12px;
+
+      .start{
+        font-size: 24px;
+        font-weight: 500;
+        color: #111A34;
+      }
+
+      .grey{
+        font-weight: 500;
+        color: #858B9C;
+      }
+    }
+  }
+
+  &-footer {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+
+
+    .order-item-button {
+      &:nth-child(1) {
+        &:not(&.extraColor){
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+      }
+    }
+
+  }
+
+  .delivery{
+    display: flex;
+    justify-content: space-between;
+    font-weight: 400;
+      color: #858B9C;
+      font-size: 24px;
+  }
+
+}

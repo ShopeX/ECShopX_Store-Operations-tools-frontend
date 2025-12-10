@@ -1,0 +1,85 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+
+$buttonHeight:110px;
+
+.page-good-detail-lock{
+  overflow: hidden !important;
+}
+.page-good-detail {
+  position: relative;
+  height: 100vh;
+  box-sizing: border-box;
+  background-color: #F5F6F7;
+
+  .district{
+    border-bottom: #E2E4EA 1px solid;
+  }
+  .category{
+    position: relative;
+    &:after{
+      display: block;
+      content:'';
+      position: absolute;
+      background-color: transparent;
+      height:1px;
+      bottom:0;
+      left:0;
+      right:0;
+  }
+  }
+
+  .spec-switch{
+    background-color: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 0 50px;
+  }
+
+  &-scrolllist {
+    // @include page-scroll(0, 0);
+    box-sizing: border-box;
+    padding-bottom:$buttonHeight+30px;
+    .title{
+      color: #999;
+      margin-left: 50px;
+    }
+    .block-title{
+      color: #c0c5d1;
+      margin-left: 40px;
+    }
+    .top-block,.bottom-block{
+      padding:0 32px;
+      background-color: white;
+      border-radius: 20px;
+      margin-bottom: 40px;
+
+    }
+  }
+
+  &-button{
+    position: fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+    border-radius: 0px 2px 2px 0px;
+    background-color: white;
+    height:$buttonHeight;
+    padding:4px 50px;
+    z-index: 100;
+
+    .sp-page-common-button{
+      height: 100px!important;
+      box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+      border-radius: 50px;
+      font-size: 36px;
+      font-weight: 500;
+      text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+    }
+  }
+
+}

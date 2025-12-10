@@ -1,0 +1,119 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.sp-page-message-card{
+    *{
+        box-sizing: border-box;
+    }
+    background: #FFFFFF;
+    padding:0 32px;
+    box-shadow: 0px 3px 5px 0px #E2E4EA;
+
+    .header{
+        height: 100px;
+        display: flex;
+        position: relative;
+
+        .item{
+            flex:1;
+            font-size: 28px;
+            color: #858B9C;
+            @include flexbox();
+
+            &.active{
+                color: #111A34;
+                font-weight: 500;
+            }
+
+            &.left{
+                margin-right:21px;
+                position: relative;
+
+                &:after{
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    right:-21px;
+                    width: 1px;
+                    height: 52px;
+                    background-color: #E2E4EA;
+                }
+            }
+
+            &.right{
+                margin-left:21px;
+            }
+        }
+
+        .underline{
+            width:calc( 50% - 21px );
+            height:4px;
+            background-color: var(--color-primary);
+            position: absolute;
+            bottom:0;
+            transition:all .2s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+            &.activeLeft{
+            }
+            &.activeRight{
+                transform: translateX(calc( 100% + 42px ));
+            }
+        }
+    }
+
+    .content{
+        padding:24px 0;
+        // @include hairline();
+        border-bottom: 1px solid #E2E4EA;
+
+        &-item{
+
+
+            display: flex;
+            align-items: flex-start;
+            line-height: 42px;
+
+            .title{
+                font-size: 24px;
+                font-weight: 400;
+                color: #666F83;
+                width:146px;
+                flex-shrink: 0;
+
+            }
+            .value{
+                font-size: 24px;
+                font-weight: 400;
+                color: #111A34;
+                flex:1;
+            }
+        }
+    }
+
+    .footer{
+        height:86px;
+        @include flexbox;
+
+        .content{
+            font-size: 28px;
+            font-weight: 500;
+            color:var(--color-primary);
+            display: flex;
+            align-items: center;
+
+            .iconfont{
+                font-size: 36px;
+
+            }
+            .text{
+                font-size: 28px;
+                margin-left:6px;
+            }
+            .disabled{
+                color: #999;
+            }
+        }
+    }
+}

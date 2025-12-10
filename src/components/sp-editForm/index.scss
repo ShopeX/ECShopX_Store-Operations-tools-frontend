@@ -1,0 +1,98 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.sp-editForm {
+  // position: absolute;
+  // width: 100%;
+  // height: 100%;
+  // left: 0;
+  // top:0;
+  // background: #fff;
+  .box {
+    height: 100%;
+    background: #fff;
+    border-radius: 8px;
+    padding: 30px 0;
+    box-shadow: 0px 3px 5px 0px #e2e4ea;
+    .title {
+      width: 100%;
+      text-align: center;
+      font-size: 40px;
+      line-height: 150px;
+    }
+    .content {
+      padding: 0 40px;
+      label,
+      input {
+        font-size: 32px;
+
+        color: #666f83;
+      }
+      taro-image-core {
+        width: 30px;
+        height: 30px;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .selectCity {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 0 solid #E2EaEA;
+        border-bottom-width: 1px;
+        padding: 16px 0;
+        margin-bottom: 13px;
+        .label {
+          font-size: 32px;
+          color: #666f83;
+          margin-right: 60px;
+        }
+        .city {
+          width: 400px;
+          font-size: 32px;
+          text-align: left;
+          @include text-overflow;
+          color: #666f83;
+          .default{
+            color: #666f83;
+          }
+        }
+        .value {
+          flex: 1;
+          font-size: 32px;
+          text-align: right;
+          .icon-jiantou {
+            font-size: 30px;
+            text-align: right;
+            color: #666f83;
+          }
+        }
+      }
+    }
+
+  }
+  .confirm {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 5px 30px 50px 30px;
+    box-sizing: border-box;
+    background: #ffffff;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+    border-radius: 0px 2px 2px 0px;
+    .btn {
+      font-size: 36px;
+      background: #4980ff;
+      color: #fff;
+      line-height: 100px;
+      width: 100%;
+      text-align: center;
+      height: 100px;
+      border-radius: 50px;
+    }
+  }
+}

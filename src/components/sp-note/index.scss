@@ -1,0 +1,25 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+@import '../../style/imports';
+
+.note {
+  text-align: center;
+  &__has-img {
+    padding: 120px 0 0;
+    padding-top: 220px;
+  }
+  &__img {
+    //width: 76px * 4;
+
+    height: 180px;
+    margin: 0 auto 52px;
+    display: block;
+  }
+  &__text {
+    color: $empty-tips-color;
+    font-size: 28px;
+  }
+}

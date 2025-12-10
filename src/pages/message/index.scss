@@ -1,0 +1,22 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.page-message{
+
+
+    .message-list{
+
+        @include page-scroll(20px,0px,0);
+        padding-left: 40px;
+        padding-right: 40px;
+        box-sizing: border-box;
+        background: #fff;
+
+    }
+
+    .note__has-img{
+        margin-top: 210px;
+    }
+}

@@ -1,0 +1,135 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$height: 110px;
+
+$prefixCls: 'sp-multilevel-picker';
+
+@mixin underline() {
+  position: relative;
+
+  &:after {
+    position: absolute;
+    content: '';
+    display: block;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: #E2E4EA;
+  }
+}
+
+.#{$prefixCls} {
+
+  .layout-body__content {
+    overflow-y: hidden;
+  }
+
+  .content {
+    height: 600px;
+    padding: 0 40px;
+  }
+
+  .underline {
+    @include underline;
+  }
+
+  &-header {
+
+    height: $height;
+    display: flex;
+    align-items: center;
+
+    .title {
+      color: #666F83;
+      font-size: 32px;
+      font-weight: 500;
+      width: 33.3%;
+      height: 100%;
+
+      &:nth-child(1) {
+        text-align: left;
+      }
+
+      &:nth-child(2) {
+        text-align: center;
+      }
+
+      &:nth-child(3) {
+        text-align: right;
+      }
+
+      &.primary {
+        color: var(--color-primary);
+
+        .title-label {
+          &::after {
+            background-color: var(--color-primary);
+            height: 4px;
+          }
+        }
+      }
+
+      &.active {
+        color: var(--color-primary);
+
+        .#{$prefixCls} {
+          &::after {
+            background-color: var(--color-primary);
+            height: 4px;
+          }
+        }
+      }
+
+      &-label {
+        height: 100%;
+        display: inline-block;
+        @include underline;
+        vertical-align: middle;
+        line-height: $height;
+        white-space: nowrap;
+        overflow-x: hidden;
+        width: 100%;
+        text-overflow: ellipsis;
+        text-align: center;
+      }
+    }
+  }
+
+  &-scrolllist {
+    height: 490px;
+
+    &-item {
+      height: $height;
+      @include underline;
+      color: #666F83;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+
+      .selected_img {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        right: -3px;
+        top: -5px;
+        opacity: 0;
+      }
+
+      &.active {
+        color: var(--color-primary);
+      }
+
+      &:last-child {
+        &::after {
+          background-color: transparent
+        }
+      }
+    }
+  }
+}

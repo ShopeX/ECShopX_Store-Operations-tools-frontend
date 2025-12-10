@@ -1,0 +1,74 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$searchInputHeight:70px;
+
+.sp-page-search-input{
+    background: #F5F6F9;
+    border-radius: 35px;
+    height:$searchInputHeight;
+    display: flex;
+    align-items: center;
+
+    .title{
+
+        padding-left:32px;
+        padding-right:31px;
+        flex:7;
+        font-size: 28px;
+        font-weight: 400;
+        color: #666F83;
+        position:relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &::after{
+            display: block;
+            content:'';
+            position:absolute;
+            height: 40px;
+            width:2px;
+            right:0;
+            top:50%;
+            transform: translateY(-50%);
+            background: #E2E4EA;
+        }
+
+        .iconfont{
+            font-size: 20px;
+            transition: transform all .3s;
+            color:#858B9C;
+
+            &.isModalShow{
+                transform: rotate(180deg);
+            }
+        }
+
+    }
+
+    .input{
+
+        flex:18;
+        padding:0 18px 0 17px;
+
+        .at-input{
+            margin:0;
+            padding:0;
+            background: #F5F6F9;
+
+            &::after{
+                display: none;
+            }
+        }
+
+        .weui-input{
+            &::-webkit-input-placeholder{
+                font-size: 26px;
+                color: #C5CAD5;
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.cpn-radio {
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e2e4ea;
+  .radio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .part1 {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      width: 88px;
+      height: 88px;
+      border-radius: 12px;
+      border: 1px solid #e2e4ea;
+      overflow: hidden;
+      taro-image-core {
+        width: 88px;
+        height: 88px;
+      }
+    }
+    .content {
+      width: 500px;
+      padding-left: 30px;
+      .title {
+        @include text-overflow;
+        font-size: 32px;
+      }
+      .at-tag--primary {
+        color: #4980ff;
+        border-color: #f7f7f7;
+        background-color: #d8e9ff;
+        border-radius: 4px;
+      }
+    }
+    .active {
+      width: 40px;
+      height: 40px;
+      taro-image-core {
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+}

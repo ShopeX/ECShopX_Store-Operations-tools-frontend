@@ -1,0 +1,251 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$detail-card-height: 200px;
+$margin-top: -10px;
+$padding-bottom: 150px;
+
+.page-order-detail {
+  overflow-x: hidden;
+
+  .wrapper {
+    padding-bottom: $padding-bottom;
+  }
+
+  .card-center {
+    @include detail-card();
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: -34px;
+
+    .title {
+      font-size: 32px;
+      font-weight: 500;
+      color: #666f83;
+    }
+
+    .desc {
+      font-size: 28px;
+      font-weight: 400;
+      color: #111a34;
+      margin-top: 4px;
+    }
+    .right {
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--color-primary);
+      display: inline-flex;
+
+      .iconfont {
+        font-size: 36px;
+        margin-top: 6px;
+        color: var(--color-primary);
+      }
+    }
+  }
+  .message-card {
+    margin-top: $margin-top;
+  }
+  .render-bottom {
+    display: flex;
+    justify-content: flex-end;
+
+    .commonbutton {
+      display: inline-flex;
+      border-radius: 45px;
+      margin-left: 20px;
+      flex-shrink: 0;
+    }
+  }
+  .order-detail {
+    box-shadow: 0px 3px 5px 0px #e2e4ea;
+    background-color: #fff;
+    margin-top: 24px;
+
+    &-title {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      padding-left: 32px;
+
+      .text {
+        font-size: 30px;
+        font-weight: 500;
+        color: #666f83;
+      }
+    }
+
+    &-content {
+      .goodItem {
+        padding-top: 16px;
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+    }
+
+    &-footer {
+      margin-top: 28px;
+      padding-bottom: 24px;
+
+      .item {
+        padding: 4px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .field {
+          color: #666f83;
+          font-size: 24px;
+          font-weight: 400;
+        }
+
+        .value {
+          color: #111a34;
+          font-size: 24px;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+  .card-bottom {
+    margin-top: 20px;
+    @include detail-card2();
+  }
+  .delivery-information {
+    &-title {
+      margin: 24px;
+      height: 42px;
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 600;
+      font-size: 30px;
+      color: #222222;
+      line-height: 42px;
+    }
+    &-details {
+      background-color: #fff;
+      padding: 24px;
+      &-item {
+        display: flex;
+        justify-content: space-between;
+        height: 72px;
+        font-weight: 400;
+        font-size: 28px;
+        color: #111a34;
+        line-height: 72px;
+        .field {
+          color: #666f83;
+        }
+      }
+    }
+    .photo {
+      font-weight: 400;
+      font-size: 28px;
+      color: #111a34;
+      .field {
+        line-height: 72px;
+        color: #666f83;
+      }
+      &-list {
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+  .at-avatar {
+    width: 200px;
+    height: 200px;
+  }
+
+  .notpay_desc {
+    display: flex;
+
+    .at-countdown__time-box {
+      font-family: -apple-system-font, Helvetica Neue, sans-serif;
+      color: white;
+      font-weight: 300;
+    }
+  }
+
+  .dada_cancel_desc {
+    display: flex;
+  }
+
+  .information {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    .title {
+      font-size: 24px;
+      &-num {
+        margin-right: 8px;
+        background-color: var(--color-primary);
+        padding: 0 12px;
+        border-radius: 50%;
+        color: #fff;
+      }
+      &-text {
+        font-size: 26px;
+        color: #000;
+      }
+    }
+    .titled {
+      font-size: 26px;
+      color: #999;
+      .title-text{
+        color: #000;
+      }
+      &-num {
+        margin-right: 8px;
+        background-color: #999;
+        padding: 0 12px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 24px;
+      }
+    }
+  }
+  .collection-modal {
+    .total-mount {
+      text-align: center;
+      margin: 30px 0;
+      color: #222;
+      font-size: 48px;
+    }
+    .payment{
+      padding: 30px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #222;
+      font-size: 28px;
+      .payments{
+        display: flex;
+        align-items: center;
+      }
+    }
+    .iconfont {
+      margin-right: 20px;
+    }
+    .icon-saoma {
+      color: #333;
+      font-size: 36px;
+      margin-top: 6px;
+    }
+    .icon-money {
+      color: #ffc90d;
+      font-size: 40px;
+    }
+    .icon-arrowRight{
+      color: rgba(170, 170, 170, 0.8);
+      font-size: 36px;
+      margin-right: 0;
+    }
+  }
+}

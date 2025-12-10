@@ -1,0 +1,95 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+
+.page-order-deal{
+
+    padding-top:24px;
+
+    .page-order-deal-comps-refusetextarea{
+
+        border-radius: 8px;
+        color:#F5F6F7;
+
+        .at-textarea {
+            border: none;
+            height: 500px;
+            width:100%;
+            background-color:currentColor;
+        }
+        .at-textarea{
+            display: flex;
+            flex-direction: column;
+
+            &__textarea{
+              flex:1;
+            }
+          }
+
+        .at-textarea__textarea {
+            height: 70%;
+        }
+
+        .taro-textarea {
+            resize: none;
+            font-size: $textarea-font-size;
+            background-color:#F5F6F7;
+        }
+
+        .taro-textarea::-webkit-input-placeholder {
+            font-size: $textarea-placeholder-font-size;
+            color: #C5CAD5;
+        }
+    }
+
+    .page-order-deal-comps-writepricearea{
+
+        height: 424px;
+        background: #F5F6F7;
+        border-radius: 8px;
+        padding: 40px 32px;
+
+        .form-price{
+            display: flex;
+            flex-direction: column;
+
+            .labelc{
+                font-size: 36px;
+                color:#111A34;
+                font-weight: 500;
+            }
+
+            .value{
+
+            }
+        }
+
+    }
+
+    .address{
+        padding: 30px 32px;
+        background: #F5F6F9;
+        border-radius: 8px;
+
+        .item{
+            display: flex;
+
+            .label{
+                font-size: 28px;
+                font-weight: 400;
+                color:#666F83;
+                flex-shrink: 0;
+                flex-wrap: nowrap;
+                flex-basis:170px;
+            }
+            .value{
+                font-size: 28px;
+                font-weight: 400;
+                color:#111A34;
+            }
+        }
+    }
+}

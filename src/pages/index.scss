@@ -1,0 +1,166 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+$photo: 64px;
+$md-white: #fff;
+
+.color-white {
+  color: $md-white;
+  margin-top:3px;
+  margin-bottom: 56px;
+}
+.color-gray {
+  margin-top: 6px;
+  margin-bottom: 56px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.page-index {
+  background: #fff;
+  .top {
+    height: 270px;
+    background: linear-gradient(180deg, #6E9AFF 0%, rgba(73, 128, 255, 0.15) 100%);
+
+    overflow: hidden;
+    .shop-title {
+      margin-top: 30px;
+      margin-left: 32px;
+      margin-right: 32px;
+      width: fit-content;
+      height: 80px;
+      background: rgba(0, 0, 0, 0.12);
+      display: flex;
+      border-radius: 40px;
+      align-items: center;
+      box-sizing: border-box;
+      .avatar {
+        padding-top: 10px;
+        .photo {
+          margin: 14px 10px;
+          box-sizing: border-box;
+          width: $photo;
+          height: $photo;
+          border: 1px solid $md-white;
+          border-radius: 50%;
+        }
+      }
+
+      .title {
+        @include text-overflow;
+        max-width: 550px;
+        line-height: 45px;
+        margin-right: 30px;
+        height: 45px;
+        color: $md-white;
+        font-size: 32px;
+        font-weight: 400;
+      }
+    }
+  }
+  .current-status {
+    margin: 0 auto;
+    margin-top: -150px;
+    width: 750px;
+    background: url('~@/assets/imgs/index/bg.png') center no-repeat;
+    background-size: 100% 100%;
+    padding: 36px 58px 80px 58px;
+    box-sizing: border-box;
+    font-size: 28px;
+    color: $md-white;
+    // box-shadow: 2px 8px 32px 0px rgba(73, 128, 255, 0.3);
+    // border-radius: 16px;
+    .big-title {
+      margin-top: 36px;
+      margin-bottom: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 28px;
+      color: $md-white;
+      .icon-gaikuang {
+        font-size: 54px;
+        margin-right: 10px;
+      }
+    }
+    .spend-money {
+      margin-bottom: 28px;
+      color: rgba(255, 255, 255, 0.6);
+      .title {
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        .icon-yincang,
+        .icon-xianshi {
+          font-size: 45px;
+          color: $md-white;
+          margin-right: 18px;
+        }
+      }
+      .money {
+        font-size: 42px;
+        color: $md-white;
+      }
+    }
+    .list {
+      @include flex-center;
+      color: rgba(255, 255, 255, 0.6);
+      .pay-order {
+        flex: 1;
+        .title {
+          width: 100%;
+          font-size: 24px;
+        }
+        .color-white {
+          font-size: 42px;
+          // margin-bottom: px;
+        }
+      }
+    }
+    .list-2 {
+      .title {
+        color: $md-white;
+      }
+    }
+  }
+  .func-list {
+    padding: 10px 40px 100px 40px;
+    width: 750px;
+    box-sizing: border-box;
+    .title {
+      font-size: 40px;
+      color: #666F83;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .list {
+
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      .item {
+        // flex:1;
+        margin-top: 30px;
+        width:25%;
+        flex-grow: 0;
+        flex-shrink: 0;
+        @include flex-center;
+        flex-direction: column;
+
+        .img {
+          width: 57px;
+          height: 57px;
+          margin: 0 auto;
+        }
+        .subtitle {
+          font-size: 24px;
+          color: #4a4a4a;
+          margin-top: 4px;
+          // text-align: center;
+        }
+      }
+    }
+  }
+}

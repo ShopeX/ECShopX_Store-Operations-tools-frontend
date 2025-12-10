@@ -1,0 +1,35 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.sp-component-remark-drawer{
+        .content{
+          .count{
+            position: absolute;
+            right:40px;
+            bottom: 10px;
+            color:#666F83;
+
+            &.error{
+              color:$danger-color;
+            }
+          }
+
+            .at-textarea{
+                border:none;
+                height:500px
+            }
+            .at-textarea__textarea{
+                height:70%;
+            }
+            .taro-textarea{
+                resize:none;
+                font-size: $textarea-font-size;
+            }
+            .taro-textarea::-webkit-input-placeholder{
+                font-size: $textarea-placeholder-font-size;
+                color: #C5CAD5;
+            }
+        }
+}

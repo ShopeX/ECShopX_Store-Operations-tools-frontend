@@ -1,0 +1,36 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+.page-planSelection{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top:0;
+  background: #fff;
+  .welcome-scrollview {
+    padding:50px 50px ;
+    box-sizing: border-box;
+
+  }
+  .title{
+    color: #111A34;
+    font-size: 52px;
+  }
+  .tips{
+    margin-top: 6px;
+    font-size: 28px;
+    color: #858B9C;
+  }
+  .box{
+    @include page-scroll(160px,0);
+    padding:50px 50px ;
+    // position: relative;
+    box-sizing: border-box;
+    height: calc(100% - 380px);
+    margin-top: 94px;
+  }
+
+}

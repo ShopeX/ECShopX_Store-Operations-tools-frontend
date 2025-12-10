@@ -1,0 +1,19 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+.sp-page-shopx-logo{
+    position:fixed;
+    bottom: 46px;
+    width: 100%;
+    pointer-events: none;
+    @include flexbox();
+    z-index: 1000;
+
+    .img{
+        width:240px;
+        height:44px;
+    }
+}

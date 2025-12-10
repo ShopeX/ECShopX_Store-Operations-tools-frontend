@@ -1,0 +1,120 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+
+$detail-card-height:200px;
+
+.page-aftersales-detail{
+
+    overflow-x: hidden;
+    padding-bottom:180px;
+
+    .card-center{
+        @include detail-card();
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        top:-34px;
+
+        .title{
+            font-size: 32px;
+            font-weight: 500;
+            color: #666F83;
+        }
+
+        .item{
+
+            display: flex;
+            margin-top:6px;
+
+            .label{
+                font-size: 28px;
+                color:#666F83;
+                font-weight: 400;
+                width:150px;
+            }
+
+            .value{
+                color:#111A34;
+                font-size: 28px;
+                font-weight: 400;
+
+                &.picwrapper{
+                    margin-top:8px;
+                }
+
+            }
+
+            .pic{
+                width: 110px;
+                height: 110px;
+                border-radius: 8px;
+                border: 1px solid #E2E4EA;
+                display: inline-block;
+                &:not(:nth-child(4n+1)){
+                    margin-left: 12px;
+                }
+
+                .image{
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .render-bottom{
+
+        display: flex;
+        justify-content: flex-end;
+
+        .commonbutton{
+            display: inline-flex;
+            border-radius:45px;
+            margin-left:20px;
+            flex-shrink: 0;
+        }
+    }
+    .remark-component{
+        margin-top:-34px;
+    }
+    .good-detail{
+
+        box-shadow: 0px 3px 5px 0px #E2E4EA;
+        background-color: #fff;
+        margin-top:24px;
+
+        &-content{
+            .goodItem{
+                padding:24px 32px;
+            }
+        }
+
+    }
+    .card-bottom{
+        margin-top:20px;
+        @include detail-card2();
+
+        .refundFee{
+            display: inline-flex;
+            font-weight: 400;
+        }
+
+    }
+
+    .notpay_desc{
+        display: flex;
+
+        .at-countdown__time-box{
+            font-family: -apple-system-font,Helvetica Neue,sans-serif;
+            color:white;
+            font-weight: 300;
+        }
+    }
+
+    .dada_cancel_desc{
+        display: flex;
+    }
+}
