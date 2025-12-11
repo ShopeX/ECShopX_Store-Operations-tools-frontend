@@ -9,8 +9,8 @@ import { SpLoading, SpFilterButton } from '@/components'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { transformData, isUndefined, isArray, expandSpecs } from '@/utils'
-import './index.scss'
 import { classNames } from '../../utils'
+import './index.scss'
 
 const selected_img = require('../../assets/imgs/selected.png')
 
