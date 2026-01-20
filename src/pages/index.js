@@ -454,7 +454,7 @@ class Index extends Component {
                   <View className='subtitle'>配送管理</View>
                 </View>
               )}
-              {VERSION_STANDARD && is_salesman && (
+              {/* {VERSION_STANDARD && is_salesman && (
                 <View
                   className='item'
                   onClick={() => {
@@ -469,7 +469,7 @@ class Index extends Component {
                   </View>
                   <View className='subtitle'>业务员管理</View>
                 </View>
-              )}
+              )} */}
               <View
                 className='item'
                 onClick={async () => {
