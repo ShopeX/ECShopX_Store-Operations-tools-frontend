@@ -1,7 +1,7 @@
 {
   "name": "ecshopx-dianwu",
   "app_name": "店务助手",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "private": true,
   "repository": "https://git.ishopex.cn/onex/ecshopx-dianwu.git",
   "description": "",
@@ -52,7 +52,9 @@
   },
   "overrides": {
     "react": "^17.0.0",
-    "react-dom": "^17.0.0",
+    "react-dom": {
+      "react": "^17.0.0"
+    },
     "@unimodules/react-native-adapter": {
       "react": "^17.0.0",
       "react-dom": "^17.0.0",
@@ -66,9 +68,6 @@
       "react-dom": "^17.0.0"
     },
     "@tarojs/components-rn": {
-      "react": "^17.0.0"
-    },
-    "react-dom": {
       "react": "^17.0.0"
     }
   },

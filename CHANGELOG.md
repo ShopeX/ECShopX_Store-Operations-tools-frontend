@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.3.0](https://git.ishopex.cn/onex/ecshopx-dianwu/compare/v4.2.0...v4.3.0) (2026-02-06)
+
+
+### Bug Fixes
+
+* **all:** fix some bugs ([8fc1819](https://git.ishopex.cn/onex/ecshopx-dianwu/commit/8fc1819516cc9ea55d1d047550c0a2ff466a7bd1))
+* Hide salesperson management content ([9c54239](https://git.ishopex.cn/onex/ecshopx-dianwu/commit/9c54239352a2e4420962bd854db0a46e78ca9c84))
+
 ## [4.2.0](https://git.ishopex.cn/onex/ecshopx-dianwu/compare/v4.1.0...v4.2.0) (2025-12-29)
 
 ## [4.1.0](https://git.ishopex.cn/onex/ecshopx-dianwu/compare/v4.0.0...v4.1.0) (2025-12-09)
