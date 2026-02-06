@@ -1,13 +1,13 @@
-<p align="center"><img width="500" height="auto" alt="logo1" src="https://github.com/user-attachments/assets/097cbde6-cedd-42d0-a2d8-a0a0430289b5" /></p>
+<p align="center"><img width="600" height="auto" alt="logo1" src="https://github.com/user-attachments/assets/489cc6f9-9108-4db9-860d-70820c99b73a" /></p>
 
-### <p align="center">Desktop Frontend</p>
+### <p align="center">Store Operations Tools Frontend</p>
 
 # Getting started
 Node.js (current LTS) and npm are required to run the project. To be sure about the version compatibility you can enable Node's corepack.
 
 ### Node
 ```
-Node v12.20.1
+Node v16.16.0
 ```
 
 ### Installation

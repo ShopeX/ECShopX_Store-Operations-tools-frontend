@@ -1,4 +1,4 @@
-FROM node:12.19.1-alpine3.12 AS builder
+FROM reg.ishopex.cn/base-images/node-python3:16.16.0-alpine3.16 AS builder
 
 ARG CMD
 ARG APP_BASE_URL
@@ -16,7 +16,6 @@ ENV APP_DEBUG ${APP_DEBUG}
 WORKDIR /app
 COPY package*.json ./
 COPY .env ./
-COPY .env.* ./
 RUN npm config set registry https://registry.npmmirror.com && npm config set @shopex:registry http://registry.npm.ishopex.cn
 RUN npm ci
 
