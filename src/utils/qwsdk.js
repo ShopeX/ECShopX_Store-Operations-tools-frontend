@@ -105,7 +105,7 @@ class QWSDK {
 
     wx.error(function (res) {
       console.log('wx sdk error:', res)
-      showToast(res.errMsg)
+      // showToast(res.errMsg)
     })
   }
   scanQRCode() {
