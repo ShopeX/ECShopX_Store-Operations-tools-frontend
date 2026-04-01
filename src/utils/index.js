@@ -84,6 +84,11 @@ export function getCurrentRoute() {
 export function setWeapp() {
   const { params: webappParams } = getCurrentInstance().router || { params: {} }
   console.log('===setWeapp', webappParams)
+  // 微商城入口 URL 常带 company_id，与 in_shop_wechat 无关也要落盘（接口依赖 Taro storage 的 company_id）
+  const wid = webappParams.company_id || webappParams.companyId
+  if (wid != null && wid !== '') {
+    Taro.setStorageSync('company_id', String(wid))
+  }
   if (webappParams && webappParams.in_shop_wechat) {
     S.set('WEBAPP', webappParams, true)
   }
@@ -93,10 +98,23 @@ export function cleanWeapp() {
   S.delete('WEBAPP', true)
   S.logout()
 }
-/** 判断是否从webapp跳转而来 */
+export function normalizeWebappRecord(raw) {
+  if (raw == null) return {}
+  if (typeof raw === 'string') {
+    try {
+      return JSON.parse(raw)
+    } catch (e) {
+      return {}
+    }
+  }
+  return raw
+}
+
+/** 判断是否从webapp跳转而来（兼容字符串 true 与布尔 true） */
 export function isFromWebapp() {
-  const webappParams = S.get('WEBAPP', true)
-  return webappParams.in_shop_wechat === 'true'
+  const webappParams = normalizeWebappRecord(S.get('WEBAPP', true))
+  const v = webappParams.in_shop_wechat
+  return v === true || v === 'true' || v === 1 || v === '1'
 }
 
 export function getThemeStyle() {

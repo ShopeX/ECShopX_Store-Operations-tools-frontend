@@ -9,6 +9,7 @@ import { Provider } from 'react-redux'
 import { SAPP, SAPPPay, SAPPShare } from './muiApp'
 import configStore from './store'
 import { cleanWeapp, isFromWebapp, isIos } from '@/utils'
+import { syncCompanyIdFromUrl } from '@/utils/companySync'
 import '@/muiApp/index.scss'
 import 'default-passive-events'
 import S from '@/spx'
@@ -71,6 +72,8 @@ class App extends Component {
   }
 
   componentDidShow(options) {
+    syncCompanyIdFromUrl()
+
     const { company_id } = options
     const { userAgent } = window.navigator
     console.log('userAgent', userAgent)

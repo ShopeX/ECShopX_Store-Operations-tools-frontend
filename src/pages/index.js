@@ -16,12 +16,14 @@ import {
   cleanWeapp,
   VERSION_PLATFORM,
   VERSION_STANDARD,
-  isIos
+  isIos,
+  normalizeWebappRecord
 } from '@/utils'
 import { SpToast, SpModal } from '@/components'
 import { connect } from 'react-redux'
 
 import S from '@/spx'
+import { syncCompanyIdFromUrl } from '@/utils/companySync'
 import './index.scss'
 
 @connect(({ planSelection }) => ({
@@ -61,47 +63,53 @@ class Index extends Component {
   }
 
   componentDidMount() {
-    // const { href } = window.location
-    // if (S.getAuthToken()) {
-    //   qwsdk.register({
-    //     url: href
-    //   })
-    // }
+    const { href } = window.location
+    if (S.getAuthToken()) {
+      qwsdk.register({
+        url: href
+      })
+    }
   }
 
   async componentDidShow() {
+    syncCompanyIdFromUrl()
     setWeapp()
     if (isFromWebapp()) {
-      const { app_id, app_type, company_id, openid, unionid, token } = S.get('WEBAPP', true)
-      // let data
+      const { app_id, app_type, company_id, openid, unionid, token } = normalizeWebappRecord(
+        S.get('WEBAPP', true)
+      )
+      let data
       if (token) {
         S.setAuthToken(token)
-        // const { href, origin, search } = window.location
-        // const sdkAuthUrlIos = Taro.getStorageSync('sdk_auth_url_ios')
-        // console.log('sdkAuthUrlIos:', sdkAuthUrlIos)
-        // qwsdk.register({
-        //   url: isIos() ? `${sdkAuthUrlIos}` : href
-        // })
+        if (company_id != null && company_id !== '') {
+          Taro.setStorageSync('company_id', String(company_id))
+        }
+        const { href, origin, search } = window.location
+        const sdkAuthUrlIos = Taro.getStorageSync('sdk_auth_url_ios')
+        console.log('sdkAuthUrlIos:', sdkAuthUrlIos)
+        qwsdk.register({
+          url: isIos() ? `${sdkAuthUrlIos}` : href
+        })
       }
-      // if (!S.getAuthToken()) {
-      //   data = await api.weapp.is_bind({
-      //     app_id,
-      //     app_type,
-      //     company_id,
-      //     openid,
-      //     unionid
-      //   })
-      //   // if (company_id) {
-      //   //   Taro.setStorageSync('company_id', company_id)
-      //   // }
-      //   if (data.token) {
-      //     S.setAuthToken(data.token)
-      //     const { href } = window.location
-      //     qwsdk.register({
-      //       url: href
-      //     })
-      //   }
-      // }
+      if (!S.getAuthToken()) {
+        data = await api.weapp.is_bind({
+          app_id,
+          app_type,
+          company_id,
+          openid,
+          unionid
+        })
+        // if (company_id) {
+        //   Taro.setStorageSync('company_id', company_id)
+        // }
+        if (data.token) {
+          S.setAuthToken(data.token)
+          const { href } = window.location
+          qwsdk.register({
+            url: href
+          })
+        }
+      }
     } else {
       const { href } = window.location
       const { company_id } = getCurrentInstance().router.params || {}
@@ -109,11 +117,13 @@ class Index extends Component {
       if (company_id) {
         Taro.setStorageSync('company_id', company_id)
       }
-      console.log('page_index:componentDidMount:qwsdk.register1', href)
+      if (S.getAuthToken()) {
+        qwsdk.register({ url: href })
+      }
     }
 
     this.getConfig()
-    this.salesman()
+    // this.salesman()
   }
 
   async salesman() {
@@ -136,11 +146,17 @@ class Index extends Component {
   async getConfig() {
     let { distributor_id } = this.props.planSelection
     if (distributor_id != null) {
-      const result = await api.home.getStatistics({ shop_id: distributor_id, is_app: 1 })
-      this.setState({
-        realTimeData: result.today_data,
-        apis: result.apis
-      })
+      try {
+        const result = await api.home.getStatistics({ shop_id: distributor_id, is_app: 1 })
+        this.setState({
+          realTimeData: result?.today_data ?? this.state.realTimeData,
+          apis: result?.apis ?? {},
+          loading: false
+        })
+      } catch (e) {
+        console.log('getConfig', e)
+        this.setState({ loading: false })
+      }
     } else {
       Taro.redirectTo({ url: `/pages/planSelection/index` })
     }
@@ -344,14 +360,14 @@ class Index extends Component {
             <View className='title'>常用功能</View>
             <View className='list'>
               {/* {apis.items == 1 && VERSION_PLATFORM && ( */}
-              {apis.items == 1 && VERSION_STANDARD && (
+              {/* {apis.items == 1 && VERSION_STANDARD && (
                 <View className='item' onClick={() => navigateTo('/pages/good/list')}>
                   <View>
                     <Image className='img' src={require('@/assets/imgs/index/good.png')}></Image>
                   </View>
                   <View className='subtitle'>商品管理</View>
                 </View>
-              )}
+              )} */}
               {apis.order == 1 && (
                 <View className='item' onClick={this.goOrderPageHandle}>
                   <View>
@@ -405,21 +421,21 @@ class Index extends Component {
                   <View className='subtitle'>商品查询</View>
                 </View>
               )} */}
-              {VERSION_STANDARD && (
-                <View
-                  className='item'
-                  onClick={() => {
-                    wx.miniProgram.navigateTo({
-                      url: `/subpages/dianwu/cashier?token=${S.getAuthToken()}&distributor_id=${distributor_id}`
-                    })
-                  }}
-                >
-                  <View className='img_'>
-                    <Image className='img' src={require('@/assets/imgs/icon_cashier.png')}></Image>
-                  </View>
-                  <View className='subtitle'>收银台</View>
+              {/* {VERSION_STANDARD && ( */}
+              <View
+                className='item'
+                onClick={() => {
+                  wx.miniProgram.navigateTo({
+                    url: `/subpages/dianwu/cashier?token=${S.getAuthToken()}&distributor_id=${distributor_id}`
+                  })
+                }}
+              >
+                <View className='img_'>
+                  <Image className='img' src={require('@/assets/imgs/icon_cashier.png')}></Image>
                 </View>
-              )}
+                <View className='subtitle'>收银台</View>
+              </View>
+              {/* )} */}
               {/* {VERSION_STANDARD && (
                 <View
                   className='item'

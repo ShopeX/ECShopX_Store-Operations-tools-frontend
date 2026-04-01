@@ -8,6 +8,7 @@ import qs from 'qs'
 import S from '@/spx'
 import { isAlipay, isWeixin, isFromWebapp } from '@/utils'
 import log from '@/utils/log'
+import { syncCompanyIdFromUrl } from '@/utils/companySync'
 import { HTTP_STATUS } from './consts'
 
 const isWeb = true
@@ -142,6 +143,9 @@ class API {
   }
 
   intereptorReq(params) {
+    // 保证首屏 API（如企微 jssdk config）能带上路由中的 company_id
+    syncCompanyIdFromUrl()
+
     const { url, data, header = {}, method = 'GET' } = params
     const { company_id, appid } = this.options
     const methodIsGet = method.toLowerCase() === 'get'
@@ -174,9 +178,8 @@ class API {
     }
 
     if (isFromWebapp()) {
-      // if (!query.company_id) {
-      query.company_id = S.get('WEBAPP', true).company_id
-      //}
+      const web = S.get('WEBAPP', true) || {}
+      query.company_id = web.company_id || web.companyId || Taro.getStorageSync('company_id')
     } else {
       query.company_id = Taro.getStorageSync('company_id')
     }
@@ -201,12 +204,28 @@ class API {
   }
 
   intereptorRes(res) {
-    const { data, statusCode, config } = res
-    const { showError = true } = config
+    if (!res || typeof res !== 'object') {
+      return Promise.reject(this.reqError(res, '请求响应异常'))
+    }
+    const { data, statusCode, config = {} } = res
+    const { showError = true } = config || {}
     if (statusCode == HTTP_STATUS.SUCCESS) {
-      const { status_code } = data.data
+      if (!data || typeof data !== 'object') {
+        if (showError) {
+          this.errorToast({ message: '服务返回数据为空' })
+        }
+        return Promise.reject(this.reqError(res, '服务返回数据为空'))
+      }
+      const inner = data.data
+      if (inner === undefined || inner === null || typeof inner !== 'object') {
+        if (showError) {
+          this.errorToast({ message: '服务返回数据格式异常' })
+        }
+        return Promise.reject(this.reqError(res, '服务返回数据格式异常'))
+      }
+      const { status_code } = inner
       if (!status_code) {
-        return data.data
+        return inner
       } else {
         // status_code 不为0，表示有错误
         if (showError) {
@@ -217,7 +236,7 @@ class API {
     }
 
     if (statusCode === HTTP_STATUS.UNAUTHORIZED) {
-      if ((data.data && data.data.status_code) === HTTP_STATUS.USER_FORBIDDEN) {
+      if (data?.data?.status_code === HTTP_STATUS.USER_FORBIDDEN) {
         if (showError) {
           this.errorToast(data)
         }
@@ -297,7 +316,7 @@ class API {
       res.config = options
       if (
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
-        (res.data.data && res.data.data.code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
+        res?.data?.data?.code === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
         S.getAuthToken()
       ) {
         // token失效时重造请求，并刷新token
@@ -353,7 +372,8 @@ class API {
     // console.log('reqError.res', res)
     // console.log('reqError.msg', msg)
     // if (res && res.statusCode) Taro.navigateTo('pages/auth/login')
-    const errMsg = (res.data && res.data.message) || msg
+    const errMsg =
+      (res && res.data && (res.data.message || res.data.data?.message)) || msg || '请求失败'
     const err = new Error(errMsg)
     err.res = res
     return err

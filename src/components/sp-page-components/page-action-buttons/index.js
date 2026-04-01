@@ -80,13 +80,19 @@ class PageActionButtons extends PureComponent {
     return buttons.map((button, index) => {
       const buttonType = button.type
       const buttonName = button.name
+      // 改价入口（markdown）：在图标/文案前统一展示「改价」
+      let displayText = buttonName
+      if (buttonType === 'markdown') {
+        const raw = (buttonName || '').trim()
+        displayText = raw.includes('改价') ? raw : `改价${raw}`
+      }
 
       return (
         <CommonButton
-          key={buttonName}
+          key={`${buttonType}-${index}-${buttonName || 'btn'}`}
           className={classNames('common-button', buttonClassName)}
           plain
-          text={buttonName}
+          text={displayText}
           onClick={this.handleFooterButtonClick.bind(this, buttonType)}
           size='small'
           // height={this.buttonHeight()}
