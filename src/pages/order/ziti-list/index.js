@@ -245,13 +245,35 @@ export default class List extends PureComponent {
     Taro.navigateTo({ url: `/pages/order/detail?order_id=${goodInfo.order_id}` })
   }
 
-  //点击操作按钮
-  handleClickActionButtons = (e) => {
-    console.log('handleClickActionButtons')
-
+  // 与 pages/order/list 一致：cancel / aftersales / payment / markdown 在 PageActionButtons 内无分支，必须由 onClick 处理
+  handleClickActionButtons = (orderItem, type) => {
+    const { order_id } = orderItem
     this.setState({
       buttonsActionVisible: true
     })
+    console.log('handleClickActionButtons', type)
+
+    if (type === 'cancel') {
+      wx.miniProgram.navigateTo({
+        url: `/subpages/dianwu/trade/cancel-trade?trade_id=${order_id}`
+      })
+      return
+    }
+    if (type === 'aftersales') {
+      wx.miniProgram.navigateTo({
+        url: `/subpages/dianwu/trade/sale-after?trade_id=${order_id}`
+      })
+      return
+    }
+    if (type === 'payment') {
+      this.handleClickGoodItem({ order_id })
+      return
+    }
+    if (type === 'markdown') {
+      wx.miniProgram.navigateTo({
+        url: `/subpages/dianwu/trade/change-price?trade_id=${order_id}`
+      })
+    }
   }
 
   //关闭操作弹框
@@ -320,7 +342,7 @@ export default class List extends PureComponent {
                   <PageActionButtons
                     buttons={orderItem?.app_info?.buttons}
                     pageType={pageType}
-                    onClick={this.handleClickActionButtons}
+                    onClick={this.handleClickActionButtons.bind(this, orderItem)}
                     onClose={this.handleCloseActionButtons}
                     orderInfo={orderItem}
                     mainStatus={mainStatus}

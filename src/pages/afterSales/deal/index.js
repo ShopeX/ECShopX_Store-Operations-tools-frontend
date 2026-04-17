@@ -117,6 +117,7 @@ export default class OrderDeal extends PureComponent {
         address_id: return_address_id
       } = await api.address.detail({ address_id: selectAddressId })
 
+      // 勿在异步回调里写 isApprove: !!address_id：无 address_id 时为 false，会覆盖用户已点的「同意」
       this.setState({
         selectAddress: {
           mobile,
@@ -124,7 +125,7 @@ export default class OrderDeal extends PureComponent {
           address: `${regions.replace(/[(\"|\[|\]|\,|')]/g, '')} ${address}`,
           id: return_address_id
         },
-        isApprove: !!router?.params?.address_id
+        ...(router?.params?.address_id ? { isApprove: true } : {})
       })
     }
   }

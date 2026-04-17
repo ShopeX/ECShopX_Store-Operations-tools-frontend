@@ -26,11 +26,14 @@ $filterHeight:100px;
   }
 
 
+  // 与 pages/order/list 一致：不用 page-scroll（其 transform 会让列表内 fixed 弹层错位/不显示）
   &-orderList {
-    @include page-scroll($searchInputHeight+$tabbarHeight+$filterHeight+20, 0);
-    z-index:100;
+    // @include page-scroll($searchInputHeight+$tabbarHeight+$filterHeight+20, 0);
+    overflow: auto;
+    height: calc(100vh - 310px);
+    z-index: 100;
 
-    &.show-buttonsaction{
+    &.show-buttonsaction {
       transform: none;
       -webkit-transform: none;
       -moz-transform: none;

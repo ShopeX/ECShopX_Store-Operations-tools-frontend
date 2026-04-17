@@ -23,8 +23,8 @@ class OrderRadio extends PureComponent {
     })
   }
 
-  componentDidUpdate(_, prevState) {
-    if (this.props.active !== prevState.active) {
+  componentDidUpdate(prevProps) {
+    if (this.props.active !== prevProps.active) {
       this.setState({
         active: this.props.active
       })

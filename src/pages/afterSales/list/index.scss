@@ -33,6 +33,10 @@ $filterHeight:100px;
     &.show-buttonsaction{
       transform: none;
       position: fixed;
+      > div, > view {
+        transform: none;
+        -webkit-transform: none;
+      }
     }
   }
 
