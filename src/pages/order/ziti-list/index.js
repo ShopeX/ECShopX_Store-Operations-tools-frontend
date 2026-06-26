@@ -342,6 +342,7 @@ export default class List extends PureComponent {
                   <PageActionButtons
                     buttons={orderItem?.app_info?.buttons}
                     pageType={pageType}
+                    showPrintPdf
                     onClick={this.handleClickActionButtons.bind(this, orderItem)}
                     onClose={this.handleCloseActionButtons}
                     orderInfo={orderItem}

@@ -5,6 +5,11 @@
 
 import req from './req'
 
+function normalizePrintPdfTicket(data) {
+  const candidates = [data, data?.data, data?.result, data?.data?.data, data?.data?.result]
+  return candidates.find((item) => item?.ticket_url)
+}
+
 //订单列表
 export function list(params) {
   return req.get('/orders', params)
@@ -38,6 +43,28 @@ export function businessreceipt({ orderId }) {
 //订单详情
 export function detail({ orderId }) {
   return req.get(`/order/${orderId}`)
+}
+
+//订单小票 PDF 下载地址
+export function printPdf({ orderId }) {
+  return req.makeReq(
+    {
+      url: `/order/${orderId}/print_pdf`,
+      method: 'GET',
+      showLoading: true
+    },
+    (res) => {
+      const { data, statusCode } = res
+      if (statusCode >= 200 && statusCode < 300) {
+        const ticket = normalizePrintPdfTicket(data)
+        if (ticket) {
+          return ticket
+        }
+      }
+
+      return req.intereptorRes(res)
+    }
+  )
 }
 
 //订单会员信息

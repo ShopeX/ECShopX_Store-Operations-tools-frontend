@@ -319,7 +319,11 @@ export default class List extends PureComponent {
           onScrollToLower={this.nextPage}
         >
           {orderList.map((orderItem, index) => {
-            const buttons = orderItem?.app_info?.buttons.filter((btn) => btn.type != 'markdown')
+            const buttons = (orderItem?.app_info?.buttons || []).filter(
+              (btn) =>
+                btn.type != 'markdown' &&
+                (orderItem?.uses_platform_item_stock != 1 || btn.type != 'delivery')
+            )
             return (
               <SpOrderItem
                 key={`${orderItem.order_id}_${index}`}
@@ -330,6 +334,7 @@ export default class List extends PureComponent {
                   <PageActionButtons
                     buttons={buttons}
                     pageType={pageType}
+                    showPrintPdf
                     onClick={this.handleClickActionButtons.bind(this, orderItem)}
                     onClose={this.handleCloseActionButtons}
                     orderInfo={orderItem}

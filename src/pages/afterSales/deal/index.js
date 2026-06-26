@@ -461,8 +461,15 @@ export default class OrderDeal extends PureComponent {
 
         <SpToast />
 
-        <FixedAction>
-          <CommonButton text='提交审核' type='primary' size='normal' onClick={this.handleSubmit} />
+        <FixedAction className='deal-fixed-action'>
+          <CommonButton
+            className='submit-button'
+            text='提交审核'
+            type='primary'
+            size='normal'
+            height={84}
+            onClick={this.handleSubmit}
+          />
         </FixedAction>
       </View>
     )

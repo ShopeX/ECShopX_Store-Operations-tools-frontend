@@ -12,6 +12,23 @@ import { ShopxLogo } from '@/components/sp-page-components'
 import { connect } from 'react-redux'
 import './index.scss'
 import S from '@/spx'
+
+/** 只展示 is_valid 明确为 true / false 的门店（含字符串与 0/1），其余状态不展示 */
+function isValidExplicitTrueOrFalse(v) {
+  if (v === true || v === false) return true
+  if (v === 1 || v === 0) return true
+  if (typeof v === 'string') {
+    const s = v.trim().toLowerCase()
+    return s === 'true' || s === 'false' || s === '1' || s === '0'
+  }
+  return false
+}
+
+function filterShopsValidTrueOrFalseOnly(list) {
+  if (!Array.isArray(list)) return []
+  return list.filter((item) => isValidExplicitTrueOrFalse(item?.is_valid))
+}
+
 @connect(
   ({ planSelection }) => ({
     planSelection
@@ -46,14 +63,13 @@ export default class PlanSelection extends PureComponent {
     })
     let data = {
       is_app: 1,
-      is_all: true,
-      is_valid: true
+      is_all: true
     }
     console.log('===', S.getAuthToken())
     const result = await api.planSelection.getShopList(data)
     console.log(result)
     this.setState({
-      shopList: result.list,
+      shopList: filterShopsValidTrueOrFalseOnly(result.list),
       loading: false
     })
   }

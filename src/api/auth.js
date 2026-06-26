@@ -14,6 +14,11 @@ export function workwechatOauthLogin(params) {
   return req.post('/operator/workwechat/oauth/login', params)
 }
 
+/** 可信入口：用解码得到的 login_name 换取正式 Bearer token */
+export function trustedLogin(params) {
+  return req.post('/operator/trusted_login', params)
+}
+
 export function bindMobile(params) {
   return req.post('/operator/workwechat/bind_mobile', params)
 }

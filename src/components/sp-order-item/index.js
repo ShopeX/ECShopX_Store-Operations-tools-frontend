@@ -76,7 +76,7 @@ export default class SpOrderItem extends PureComponent {
               <SpGoodPrice
                 size={24}
                 bold
-                price={orderInfo?.refund_fee}
+                price={Number(orderInfo?.refund_fee || 0) * 100}
                 isSame
                 prefix='应退总金额：'
               />

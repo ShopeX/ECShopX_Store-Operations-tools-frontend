@@ -83,6 +83,17 @@ class Spx {
     return userInfo
   }
 
+  /** 当前本地日期 YYYY-MM-DD（配送排行等默认「今天」） */
+  getNowDate() {
+    const today = new Date()
+    const y = today.getFullYear()
+    let m = today.getMonth() + 1
+    let d = today.getDate()
+    m = m < 10 ? '0' + m : '' + m
+    d = d < 10 ? '0' + d : '' + d
+    return `${y}-${m}-${d}`
+  }
+
   get(key, forceLocal) {
     let val = globalData[key]
     if (forceLocal) {

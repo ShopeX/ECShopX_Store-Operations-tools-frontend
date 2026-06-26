@@ -42,6 +42,26 @@ class PageActionButtons extends PureComponent {
     }
   }
 
+  getButtons = (buttons) => {
+    const { showPrintPdf } = this.props
+    const printButton = { type: 'print_pdf', name: '打印小票' }
+    const actionButtons = buttons || []
+
+    if (!showPrintPdf || actionButtons.some((button) => button?.type === printButton.type)) {
+      return actionButtons
+    }
+
+    if (!actionButtons.length) {
+      return [printButton]
+    }
+
+    return [
+      ...actionButtons.slice(0, actionButtons.length - 1),
+      printButton,
+      actionButtons[actionButtons.length - 1]
+    ]
+  }
+
   //根据page决定按钮的高度
   buttonHeight = () => {
     const { pageType = 'orderList' } = this.props
@@ -63,8 +83,7 @@ class PageActionButtons extends PureComponent {
     return height
   }
   //根据按钮的位置和类型获得按钮的风格
-  buttonType = (buttonName, buttonIndex) => {
-    const { buttons } = this.props
+  buttonType = (buttonName, buttonIndex, buttons) => {
     //如果是最后一个 按钮类型为
     if (buttonName === '取消订单') {
       return 'danger'
@@ -76,8 +95,9 @@ class PageActionButtons extends PureComponent {
 
   renderButtons = () => {
     const { buttons = [], buttonClassName } = this.props
+    const actionButtons = this.getButtons(buttons)
 
-    return buttons.map((button, index) => {
+    return actionButtons.map((button, index) => {
       const buttonType = button.type
       const buttonName = button.name
       // 改价入口（markdown）：在图标/文案前统一展示「改价」
@@ -96,14 +116,14 @@ class PageActionButtons extends PureComponent {
           onClick={this.handleFooterButtonClick.bind(this, buttonType)}
           size='small'
           // height={this.buttonHeight()}
-          type={this.buttonType(buttonName, index)}
+          type={this.buttonType(buttonName, index, actionButtons)}
         />
       )
     })
   }
   //点击不同的按钮进行不同的操作
   handleFooterButtonClick = (buttonType) => {
-    const { orderInfo, onClick = () => {} } = this.props
+    const { onClick = () => {} } = this.props
     console.log('buttonType', buttonType)
     if (buttonType === 'mark') {
       this.handleClickNote()
@@ -131,8 +151,57 @@ class PageActionButtons extends PureComponent {
       this.handleCanceldeliverystaff()
     } else if (buttonType === 'confirmpackag') {
       this.handleConfirmpackag()
+    } else if (buttonType === 'print_pdf') {
+      this.handlePrintPdf()
+      return
     }
     onClick(buttonType)
+  }
+
+  handlePrintPdf = async () => {
+    const { orderInfo } = this.props
+    const orderId = orderInfo?.order_id
+
+    if (!orderId) {
+      Taro.showToast({
+        icon: 'none',
+        title: '订单号不存在'
+      })
+      return
+    }
+
+    try {
+      Taro.showToast({
+        icon: 'none',
+        title: '正在打开小票'
+      })
+
+      const res = await api.order.printPdf({
+        orderId
+      })
+      const url = res?.ticket_url
+
+      if (!url) {
+        throw new Error('下载地址为空')
+      }
+
+      if (typeof wx === 'undefined' || !wx?.miniProgram?.navigateTo) {
+        throw new Error('请在小程序中操作')
+      }
+
+      wx.miniProgram.navigateTo({
+        url: `/subpages/dianwu/print-pdf?${qs.stringify({
+          order_id: orderId,
+          ticket_url: url
+        })}`
+      })
+    } catch (e) {
+      console.log('printPdf error', e)
+      Taro.showToast({
+        icon: 'none',
+        title: e.message || '下载失败，请稍后重试'
+      })
+    }
   }
 
   handleConfirmpackag = () => {

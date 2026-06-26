@@ -13,7 +13,7 @@ import {
   FixedAction,
   PageActionButtons
 } from '@/components/sp-page-components'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { AtCountdown, AtModal, AtModalHeader, AtModalContent } from 'taro-ui'
 import { ALLSELFDELIVERYSTATUSLIST } from '@/consts'
 import api from '@/api'
@@ -40,8 +40,13 @@ class OrderDetail extends Component {
       loading: false,
       squareRoot: false, //待开方
       supplement: false, //待补充
-      isOpened: false //支付弹窗
+      isOpened: false, //支付弹窗
+      paymentVoucherPreviewVisible: false
     }
+  }
+
+  closePaymentVoucherPreview = () => {
+    this.setState({ paymentVoucherPreviewVisible: false })
   }
 
   async componentDidShow() {
@@ -461,10 +466,15 @@ class OrderDetail extends Component {
       loading,
       squareRoot,
       supplement,
-      isOpened
+      isOpened,
+      paymentVoucherPreviewVisible
     } = this.state
 
     let terminal_info = orderInfo?.app_info?.terminal_info
+    const actionButtons =
+      orderInfo.uses_platform_item_stock == 1 && orderInfo.app_info?.buttons
+        ? orderInfo.app_info.buttons.filter((btn) => btn.type !== 'delivery')
+        : orderInfo.app_info?.buttons
     return loading ? (
       <SpLoading>正在加载...</SpLoading>
     ) : (
@@ -583,6 +593,22 @@ class OrderDetail extends Component {
                 <View className='field'>实收金额</View>
                 <View className='value'>{this.renderRealFee()}</View>
               </View>
+
+              {orderInfo?.pos_payment_voucher_url ? (
+                <View className='payment-voucher'>
+                  <View className='payment-voucher-label'>支付凭证</View>
+                  <View
+                    className='payment-voucher-thumb'
+                    onClick={() => this.setState({ paymentVoucherPreviewVisible: true })}
+                  >
+                    <Image
+                      className='payment-voucher-img'
+                      src={orderInfo.pos_payment_voucher_url}
+                      mode='aspectFill'
+                    />
+                  </View>
+                </View>
+              ) : null}
             </View>
           </View>
 
@@ -699,12 +725,23 @@ class OrderDetail extends Component {
           </AtModalContent>
         </AtModal>
 
+        {paymentVoucherPreviewVisible && orderInfo?.pos_payment_voucher_url ? (
+          <View className='payment-voucher-preview-mask' onClick={this.closePaymentVoucherPreview}>
+            <Image
+              className='payment-voucher-preview-img'
+              src={orderInfo.pos_payment_voucher_url}
+              mode='widthFix'
+            />
+          </View>
+        ) : null}
+
         <SpToast />
 
         <FixedAction pageType={pageType}>
           <PageActionButtons
-            buttons={orderInfo.app_info?.buttons}
+            buttons={actionButtons}
             pageType={pageType}
+            showPrintPdf
             orderInfo={orderInfo}
             onClick={this.handleClickButton.bind(this)}
           />
