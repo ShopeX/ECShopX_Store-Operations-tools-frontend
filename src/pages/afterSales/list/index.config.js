@@ -4,5 +4,6 @@
  */
 
 export default {
-  navigationBarTitleText: '售后列表'
+  navigationBarTitleText: '售后列表',
+  disableScroll: true
 }

@@ -3,34 +3,111 @@
  * See LICENSE file for license details.
  */
 
-.page-planSelection{
+.page-planSelection {
   position: absolute;
   height: 100%;
   width: 100%;
   left: 0;
-  top:0;
+  top: 0;
   background: #fff;
-  .welcome-scrollview {
-    padding:50px 50px ;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 
+  .welcome-scrollview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 50px 120px;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 0;
   }
-  .title{
-    color: #111A34;
+
+  .title {
+    flex-shrink: 0;
+    color: #111a34;
     font-size: 52px;
   }
-  .tips{
+
+  .tips {
+    flex-shrink: 0;
     margin-top: 6px;
     font-size: 28px;
-    color: #858B9C;
-  }
-  .box{
-    @include page-scroll(160px,0);
-    padding:50px 50px ;
-    // position: relative;
-    box-sizing: border-box;
-    height: calc(100% - 380px);
-    margin-top: 94px;
+    color: #858b9c;
   }
 
+  .search-bar {
+    flex-shrink: 0;
+    margin-top: 40px;
+
+    .search-input {
+      @include flexbox();
+      align-items: center;
+      height: 80px;
+      padding: 0 24px;
+      background: #eff0f0;
+      border-radius: 8px;
+      box-sizing: border-box;
+
+      &__icon {
+        flex-shrink: 0;
+        font-size: 32px;
+        color: #a6a6a7;
+        margin-right: 16px;
+        line-height: 1;
+      }
+
+      &__field {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+        height: 80px;
+        font-size: 28px;
+        line-height: 80px;
+        color: #111a34;
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+
+        input,
+        .weui-input {
+          width: 100%;
+          height: 80px;
+          line-height: 80px;
+          font-size: 28px;
+          color: #111a34;
+          background: transparent;
+          border: none;
+          outline: none;
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+
+          &::-webkit-input-placeholder {
+            font-size: 28px;
+            color: #bababa;
+            line-height: 80px;
+          }
+        }
+      }
+
+      &__clear {
+        flex-shrink: 0;
+        font-size: 28px;
+        color: #bababa;
+        line-height: 1;
+        padding-left: 16px;
+      }
+    }
+  }
+
+  .box {
+    flex: 1;
+    min-height: 0;
+    margin-top: 40px;
+    box-sizing: border-box;
+  }
 }

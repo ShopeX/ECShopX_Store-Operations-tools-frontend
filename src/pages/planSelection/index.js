@@ -4,7 +4,7 @@
  */
 
 import { PureComponent } from 'react'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Input, Text } from '@tarojs/components'
 import api from '@/api'
 import Taro from '@tarojs/taro'
 import { SpRadio, SpLoading, SpNote, SpToast } from '@/components'
@@ -29,6 +29,14 @@ function filterShopsValidTrueOrFalseOnly(list) {
   return list.filter((item) => isValidExplicitTrueOrFalse(item?.is_valid))
 }
 
+function filterShopsByKeyword(list, keyword) {
+  const validList = filterShopsValidTrueOrFalseOnly(list)
+  const trimmed = (keyword || '').trim()
+  if (!trimmed) return validList
+  const lowerKeyword = trimmed.toLowerCase()
+  return validList.filter((item) => (item?.name || '').toLowerCase().includes(lowerKeyword))
+}
+
 @connect(
   ({ planSelection }) => ({
     planSelection
@@ -42,9 +50,22 @@ export default class PlanSelection extends PureComponent {
     super(props)
     this.state = {
       isActive: null,
+      allShopList: [],
       shopList: [],
+      searchKeyword: '',
       loading: false
     }
+  }
+
+  onSearchChange = (value) => {
+    this.setState((prevState) => ({
+      searchKeyword: value,
+      shopList: filterShopsByKeyword(prevState.allShopList, value)
+    }))
+  }
+
+  onSearchClear = () => {
+    this.onSearchChange('')
   }
 
   activeHandle = async (activeShop) => {
@@ -68,10 +89,12 @@ export default class PlanSelection extends PureComponent {
     console.log('===', S.getAuthToken())
     const result = await api.planSelection.getShopList(data)
     console.log(result)
-    this.setState({
-      shopList: filterShopsValidTrueOrFalseOnly(result.list),
+    const allShopList = result.list || []
+    this.setState((prevState) => ({
+      allShopList,
+      shopList: filterShopsByKeyword(allShopList, prevState.searchKeyword),
       loading: false
-    })
+    }))
   }
 
   componentDidMount() {
@@ -79,23 +102,47 @@ export default class PlanSelection extends PureComponent {
   }
 
   render() {
-    const { isActive, shopList, loading } = this.state
+    const { isActive, allShopList, shopList, searchKeyword, loading } = this.state
     return (
       <View className='page-planSelection'>
         <View className='welcome-scrollview' scrollY scrollWithAnimation>
           <View className='title'>选择您的店铺工作台</View>
           <View className='tips'>没有找到？请联系您的超级管理员</View>
+          <View className='search-bar'>
+            <View className='search-input'>
+              <Text className='iconfont icon-sousuo search-input__icon'></Text>
+              <Input
+                className='search-input__field'
+                type='text'
+                placeholder='搜索店铺名称'
+                value={searchKeyword}
+                confirmType='search'
+                onInput={(e) => this.onSearchChange(e.detail.value)}
+              />
+              {!!searchKeyword && (
+                <Text
+                  className='iconfont icon-qingchu search-input__clear'
+                  onClick={this.onSearchClear}
+                ></Text>
+              )}
+            </View>
+          </View>
 
-          <ScrollView className='box'>
+          <ScrollView className='box' scrollY scrollWithAnimation>
             {loading && <SpLoading>正在加载...</SpLoading>}
-            {shopList.length > 0 && (
+            {!loading && shopList.length > 0 && (
               <SpRadio
                 isActive={isActive}
                 SpRadioData={shopList}
                 activeHandle={this.activeHandle}
               ></SpRadio>
             )}
-            {shopList.length <= 0 && <SpNote img='no_order.png'>快去添加店铺吧~</SpNote>}
+            {!loading && allShopList.length <= 0 && (
+              <SpNote img='no_order.png'>快去添加店铺吧~</SpNote>
+            )}
+            {!loading && allShopList.length > 0 && shopList.length <= 0 && (
+              <SpNote img='no_order.png'>未找到相关店铺</SpNote>
+            )}
           </ScrollView>
         </View>
         <ShopxLogo />

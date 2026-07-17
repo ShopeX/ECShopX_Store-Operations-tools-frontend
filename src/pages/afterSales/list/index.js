@@ -285,6 +285,7 @@ export default class List extends PureComponent {
 
         <ScrollView
           scrollY
+          scrollX={false}
           className={classNames('page-order-list-orderList', {
             ['show-buttonsaction']: buttonsActionVisible
           })}
