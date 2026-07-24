@@ -6,3 +6,8 @@ node_modules/
 .DS_Store
 .env.local
 .codegraph/
+
+.github/
+AGENTS.md
+CLAUDE.md
+openwiki/
