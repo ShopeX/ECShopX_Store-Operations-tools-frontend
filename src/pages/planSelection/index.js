@@ -51,8 +51,8 @@ export default class PlanSelection extends PureComponent {
     this.state = {
       isActive: null,
       allShopList: [],
-      shopList: [],
       searchKeyword: '',
+      listScrollTop: 0,
       loading: false
     }
   }
@@ -60,7 +60,8 @@ export default class PlanSelection extends PureComponent {
   onSearchChange = (value) => {
     this.setState((prevState) => ({
       searchKeyword: value,
-      shopList: filterShopsByKeyword(prevState.allShopList, value)
+      // 强制 ScrollView 回到顶部并刷新，避免复用旧列表节点
+      listScrollTop: prevState.listScrollTop === 0 ? 0.01 : 0
     }))
   }
 
@@ -90,11 +91,10 @@ export default class PlanSelection extends PureComponent {
     const result = await api.planSelection.getShopList(data)
     console.log(result)
     const allShopList = result.list || []
-    this.setState((prevState) => ({
+    this.setState({
       allShopList,
-      shopList: filterShopsByKeyword(allShopList, prevState.searchKeyword),
       loading: false
-    }))
+    })
   }
 
   componentDidMount() {
@@ -102,7 +102,9 @@ export default class PlanSelection extends PureComponent {
   }
 
   render() {
-    const { isActive, allShopList, shopList, searchKeyword, loading } = this.state
+    const { isActive, allShopList, searchKeyword, listScrollTop, loading } = this.state
+    // 每次渲染按关键词实时过滤，避免重复搜索时 shopList 与关键词不同步
+    const shopList = filterShopsByKeyword(allShopList, searchKeyword)
     return (
       <View className='page-planSelection'>
         <View className='welcome-scrollview' scrollY scrollWithAnimation>
@@ -128,10 +130,17 @@ export default class PlanSelection extends PureComponent {
             </View>
           </View>
 
-          <ScrollView className='box' scrollY scrollWithAnimation>
+          <ScrollView
+            className='box'
+            scrollY
+            scrollX={false}
+            scrollTop={listScrollTop}
+            scrollWithAnimation
+          >
             {loading && <SpLoading>正在加载...</SpLoading>}
             {!loading && shopList.length > 0 && (
               <SpRadio
+                key={`shop-list-${searchKeyword}`}
                 isActive={isActive}
                 SpRadioData={shopList}
                 activeHandle={this.activeHandle}

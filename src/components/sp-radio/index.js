@@ -24,7 +24,7 @@ export default class index extends PureComponent {
           {SpRadioData.map((item, index) => {
             return (
               <View
-                key={item.distributor_id}
+                key={`${item.distributor_id}-${index}`}
                 className='cpn-radio'
                 onClick={() => activeHandle(item)}
               >
