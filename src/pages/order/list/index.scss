@@ -13,7 +13,10 @@ $filterHeight:100px;
 
   background: #F9FAFB;
   //background: #fff;
+  height: 100vh;
   min-height: 100vh;
+  overflow: hidden;
+  width: 100%;
 
   * {
     box-sizing: border-box;
@@ -28,8 +31,11 @@ $filterHeight:100px;
 
   &-orderList {
     // @include page-scroll($searchInputHeight+$tabbarHeight+$filterHeight+20, 0);
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    width: 100%;
     height: calc(100vh - 310px);
+    overscroll-behavior: none;
     z-index:100;
 
     &.show-buttonsaction{

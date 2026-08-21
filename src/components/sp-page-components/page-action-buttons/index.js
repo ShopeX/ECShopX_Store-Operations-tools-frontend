@@ -95,7 +95,7 @@ class PageActionButtons extends PureComponent {
 
   renderButtons = () => {
     const { buttons = [], buttonClassName } = this.props
-    const actionButtons = this.getButtons(buttons)
+    const actionButtons = buttons || []
 
     return actionButtons.map((button, index) => {
       const buttonType = button.type
