@@ -144,7 +144,7 @@ export default class List extends PureComponent {
       ...this.getOrderParams()
     })
     this.setState({
-      orderList: [...this.state.orderList, ...list]
+      orderList: params.page_no > 1 ? [...this.state.orderList, ...list] : list
     })
 
     return {
@@ -182,11 +182,13 @@ export default class List extends PureComponent {
   }
 
   //状态变化的回调
-  handleStatusChange = (status) => {
+  handleStatusChange = (status, init) => {
     this.setState({
       mainStatus: status
     })
-    this.searchFilter({ isResetList: true })
+    if (!init) {
+      this.searchFilter({ isResetList: true })
+    }
   }
 
   //提交筛选状态
@@ -295,7 +297,7 @@ export default class List extends PureComponent {
           {orderList.map((orderItem, index) => {
             return (
               <SpOrderItem
-                key={`${orderItem.order_id}_${index}`}
+                key={orderItem.aftersales_bn || `${orderItem.order_id}_${index}`}
                 pageType={pageType}
                 info={orderItem}
                 onGoodItemClick={this.handleClickGoodItem}

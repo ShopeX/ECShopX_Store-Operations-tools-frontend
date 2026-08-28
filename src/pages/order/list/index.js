@@ -7,6 +7,7 @@ import React, { PureComponent } from 'react'
 import { View, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { getThemeStyle } from '@/utils'
+import { normalizeCouponOrderInfo } from '@/utils/order'
 import FilterBlock from './comps/filterblock'
 import { ORDER_LIST_CANCEL_REASON } from '@/consts'
 import { withPager, withBackToTop } from '@/hocs'
@@ -159,8 +160,10 @@ export default class List extends PureComponent {
       ...this.getOrderParams()
     })
 
+    const normalizedList = list.map(normalizeCouponOrderInfo)
+
     this.setState({
-      orderList: params.page_no > 1 ? [...this.state.orderList, ...list] : list
+      orderList: params.page_no > 1 ? [...this.state.orderList, ...normalizedList] : normalizedList
     })
 
     return {

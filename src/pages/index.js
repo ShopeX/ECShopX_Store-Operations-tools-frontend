@@ -5,7 +5,7 @@
 
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import React, { Component } from 'react'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image, Input } from '@tarojs/components'
 import api from '@/api'
 import {
   requestCallback,
@@ -19,8 +19,10 @@ import {
   isIos,
   normalizeWebappRecord
 } from '@/utils'
+import { parseCouponConsumeParams } from '@/utils/order'
 import { SpToast, SpModal } from '@/components'
 import { connect } from 'react-redux'
+import { AtModal } from 'taro-ui'
 
 import S from '@/spx'
 import { syncCompanyIdFromUrl } from '@/utils/companySync'
@@ -58,6 +60,9 @@ class Index extends Component {
         shopList: [],
         order_info: {}
       },
+      couponCodeModalVisible: false,
+      couponCode: '',
+      couponCodeError: '',
       is_salesman: false
     }
   }
@@ -198,62 +203,149 @@ class Index extends Component {
     return s_x
   }
 
-  handleOnScanQRCode = async () => {
-    console.log('clicl:handleOnScanQRCode')
+  handleOnScanZitiQRCode = async () => {
+    let res
+    try {
+      res = await qwsdk.scanQRCode()
+    } catch (e) {
+      console.log('handleOnScanZitiQRCode:scan error', e)
+      const errMsg = e?.errMsg || e?.message || ''
+      if (errMsg.indexOf('cancel') !== -1) return
+      Taro.showToast({
+        icon: 'none',
+        title: errMsg || '扫码失败，请重试'
+      })
+      return
+    }
 
-    const res = await qwsdk.scanQRCode()
-    // const res = 'excode:65796-2124869866'
-    console.log('code', res)
-    const str = 'excode:'
-    if (res && res.indexOf(str) == -1) {
-      requestCallback(
-        async () => {
-          const data = await api.order.qrwriteoff({
-            code: res.replace('ZT_', '')
-          })
-          return data
-        },
-        '核销订单成功',
-        ({ order_id }) => {
-          Taro.navigateTo({ url: `/pages/order/detail?order_id=${order_id}` })
-        },
-        () => {
-          this.setState({
-            veriError: '核销码不存在或有误，请检查！'
-          })
-        }
-      )
-    } else if (res && res.indexOf(str) != -1) {
-      let { distributor_id } = this.props.planSelection
-      try {
-        const result = await api.home.checkCode({
-          code: res.slice(7),
-          distributor_id
+    const excodePrefix = 'excode:'
+
+    if (!res) {
+      Taro.showToast({
+        icon: 'none',
+        title: '未识别到有效核销码，请重试'
+      })
+      return
+    }
+
+    if (res.indexOf(excodePrefix) !== -1) {
+      Taro.showToast({
+        icon: 'none',
+        title: '请使用券核销扫描优惠券码'
+      })
+      return
+    }
+
+    requestCallback(
+      async () => {
+        const data = await api.order.qrwriteoff({
+          code: res.replace('ZT_', '')
         })
-        if (!result.status) {
-          this.setState({
-            currentModal: {
-              visible: true,
-              status: 'fail',
-              shopList: result.distributors.list
-            }
-          })
-        } else {
-          this.setState({
-            currentModal: {
-              visible: true,
-              status: 'success',
-              order_info: result.order_info.items
-            }
-          })
-        }
-      } catch (error) {
-        this.setState({
-          veriError: '核销码不存在或有误，请检查！'
+        return data
+      },
+      '核销订单成功',
+      ({ order_id }) => {
+        Taro.navigateTo({ url: `/pages/order/detail?order_id=${order_id}` })
+      },
+      () => {
+        Taro.showToast({
+          icon: 'none',
+          title: '核销码不存在或有误，请检查！'
         })
       }
-    }
+    )
   }
+
+  handleConsumeCouponCode = (rawCode, invalidTitle = '请输入券码') => {
+    const { code, order_id } = parseCouponConsumeParams(rawCode)
+    if (!code) {
+      if (this.state.couponCodeModalVisible) {
+        this.setState({ couponCodeError: invalidTitle })
+      } else {
+        Taro.showToast({
+          icon: 'none',
+          title: invalidTitle
+        })
+      }
+      return
+    }
+
+    requestCallback(
+      async () => {
+        return api.order.discountCardConsume({
+          code,
+          ...(order_id ? { order_id } : {})
+        })
+      },
+      '券核销成功',
+      this.handleCloseCouponCodeModal,
+      () => {
+        if (this.state.couponCodeModalVisible) {
+          this.setState({ couponCodeError: '核销失败，请检查券码' })
+        } else {
+          Taro.showToast({
+            icon: 'none',
+            title: '核销失败，请检查券码'
+          })
+        }
+      }
+    )
+  }
+
+  handleOnScanCouponQRCode = async () => {
+    let res
+    try {
+      res = await qwsdk.scanQRCode()
+    } catch (e) {
+      console.log('handleOnScanCouponQRCode:scan error', e)
+      const errMsg = e?.errMsg || e?.message || ''
+      if (errMsg.indexOf('cancel') !== -1) return
+      Taro.showToast({
+        icon: 'none',
+        title: errMsg || '扫码失败，请重试'
+      })
+      return
+    }
+
+    if (!res) {
+      Taro.showToast({
+        icon: 'none',
+        title: '未识别到有效券码，请重试'
+      })
+      return
+    }
+
+    this.handleConsumeCouponCode(res, '券码无效，请重新扫码')
+  }
+
+  handleOpenCouponCodeModal = () => {
+    this.setState({
+      couponCodeModalVisible: true,
+      couponCode: '',
+      couponCodeError: ''
+    })
+  }
+
+  handleCloseCouponCodeModal = () => {
+    this.setState({
+      couponCodeModalVisible: false,
+      couponCode: '',
+      couponCodeError: ''
+    })
+  }
+
+  handleCouponCodeInput = (e) => {
+    this.setState({
+      couponCode: e.detail.value,
+      couponCodeError: ''
+    })
+  }
+
+  handleSubmitCouponCode = () => {
+    const { couponCode } = this.state
+    this.handleConsumeCouponCode(couponCode)
+  }
+
   handleCancel = () => {
     this.setState({
       currentModal: {
@@ -270,8 +362,18 @@ class Index extends Component {
   }
 
   render() {
-    const { moneyShow, realTimeData, loading, apis, is_center, currentModal, is_salesman } =
-      this.state
+    const {
+      moneyShow,
+      realTimeData,
+      loading,
+      apis,
+      is_center,
+      currentModal,
+      couponCodeModalVisible,
+      couponCode,
+      couponCodeError,
+      is_salesman
+    } = this.state
 
     const { name, logo, distributor_id } = this.props.planSelection
     return (
@@ -295,14 +397,14 @@ class Index extends Component {
                 <Text>实付金额（元）</Text>
                 {moneyShow ? (
                   <View
-                    className='iconfont icon-yincang'
+                    className='iconfont icon-xianshi'
                     onClick={() => {
                       this.switchHandle()
                     }}
                   ></View>
                 ) : (
                   <View
-                    className='iconfont icon-xianshi'
+                    className='iconfont icon-yincang'
                     onClick={() => {
                       this.switchHandle()
                     }}
@@ -385,7 +487,7 @@ class Index extends Component {
                 </View>
               )}
               {apis.order == 1 && (
-                <View className='item' onClick={this.handleOnScanQRCode.bind(this)}>
+                <View className='item' onClick={this.handleOnScanZitiQRCode.bind(this)}>
                   <View className='img_'>
                     <Image
                       className='img'
@@ -393,6 +495,17 @@ class Index extends Component {
                     ></Image>
                   </View>
                   <View className='subtitle'>自提核销</View>
+                </View>
+              )}
+              {apis.order == 1 && (
+                <View className='item' onClick={this.handleOpenCouponCodeModal}>
+                  <View className='img_'>
+                    <Image
+                      className='img'
+                      src={require('@/assets/imgs/index/shaoyishao.png')}
+                    ></Image>
+                  </View>
+                  <View className='subtitle'>券核销</View>
                 </View>
               )}
               {apis.order_ziti == 1 && (
@@ -511,6 +624,40 @@ class Index extends Component {
             handleCancel={this.handleCancel}
             orderInfoHandle={this.orderInfoHandle}
           ></SpModal>
+          <AtModal
+            className='coupon-code-at-modal'
+            isOpened={couponCodeModalVisible}
+            onClose={this.handleCloseCouponCodeModal}
+          >
+            <View className='coupon-code-modal'>
+              <View className='coupon-code-title'>券核销</View>
+              <View className='coupon-code-body'>
+                <Input
+                  className='coupon-code-input'
+                  value={couponCode}
+                  placeholder='请输入券码'
+                  onInput={this.handleCouponCodeInput}
+                  onConfirm={this.handleSubmitCouponCode}
+                />
+                {!!couponCodeError && <View className='coupon-code-error'>{couponCodeError}</View>}
+              </View>
+              <View className='coupon-code-actions'>
+                <View
+                  className='coupon-code-action cancel'
+                  onClick={this.handleCloseCouponCodeModal}
+                >
+                  取消
+                </View>
+                <View className='coupon-code-action scan' onClick={this.handleOnScanCouponQRCode}>
+                  <Text className='iconfont icon-saoma'></Text>
+                  <Text className='text'>扫码</Text>
+                </View>
+                <View className='coupon-code-action submit' onClick={this.handleSubmitCouponCode}>
+                  核销
+                </View>
+              </View>
+            </View>
+          </AtModal>
         </>
       </View>
     )

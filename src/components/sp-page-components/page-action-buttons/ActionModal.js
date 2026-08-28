@@ -20,29 +20,30 @@ export default class ActionModal extends PureComponent {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { href } = window.location
-    const { type } = this.props
+    const { type, visible } = this.props
 
     if (type === 'verification') {
-      console.log('componentDidUpdate', type)
       const sdkAuthUrlIos = Taro.getStorageSync('sdk_auth_url_ios')
       qwsdk.register({
         url: isIos() ? `${sdkAuthUrlIos}` : href
       })
     }
-    if (prevProps.visible !== this.props.visible && this.props.visible && type === 'verification') {
-      // if (isIos()) {
-      //   document.getElementById('content').getElementsByClassName('taro-textarea')[0].focus()
-      // } else {
-      setTimeout(() => {
-        //document.getElementById('inputwrapper').getElementsByClassName('taro-input')[0].focus()
-        console.log(
-          "document.getElementById('inputwrapper')",
-          document.getElementById('inputwrapper').getElementsByClassName('weui-input')[0].focus()
-        )
-      }, 300)
-      // }
+
+    if (prevProps.visible !== visible) {
+      if (visible && type === 'verification') {
+        this.setState({
+          veriCode: ['', '', '', '', '', ''],
+          veriError: false
+        })
+        setTimeout(() => {
+          const inputEl = document
+            .getElementById('inputwrapper')
+            ?.getElementsByClassName('weui-input')?.[0]
+          inputEl?.focus()
+        }, 300)
+      }
     }
   }
 
@@ -91,14 +92,11 @@ export default class ActionModal extends PureComponent {
   }
 
   fillSix = (value = '') => {
-    let newArray = value.split('')
-    let max = 6
-    if (newArray.length < max) {
-      new Array(max - newArray.length).fill('').forEach((item) => {
-        newArray.push('')
-      })
+    const digits = String(value).replace(/\D/g, '').slice(0, 6).split('')
+    while (digits.length < 6) {
+      digits.push('')
     }
-    return newArray
+    return digits
   }
 
   computedRealLength = () => {
@@ -157,6 +155,7 @@ export default class ActionModal extends PureComponent {
               className='input'
               type='number'
               maxlength={6}
+              value={this.state.veriCode.join('')}
               onInput={this.handleChangeInputVericode}
             />
             <View
@@ -228,7 +227,13 @@ export default class ActionModal extends PureComponent {
 
   //取消弹窗
   handleClose = () => {
-    const { onClose } = this.props
+    const { onClose, type } = this.props
+    if (type === 'verification') {
+      this.setState({
+        veriCode: ['', '', '', '', '', ''],
+        veriError: false
+      })
+    }
     onClose && onClose()
   }
 
@@ -419,9 +424,24 @@ export default class ActionModal extends PureComponent {
 
   //扫一扫
   handleOnScanQRCode = async () => {
-    console.log('handleOnScanQRCode')
-    const res = await qwsdk.scanQRCode()
-    console.log('handleOnScanQRCode', res)
+    const { orderInfo, onRefresh } = this.props
+    let res
+    try {
+      res = await qwsdk.scanQRCode()
+    } catch (e) {
+      const errMsg = e?.errMsg || e?.message || ''
+      if (errMsg.indexOf('cancel') !== -1) return
+      this.setState({
+        veriError: errMsg || '扫码失败，请重试'
+      })
+      return
+    }
+    if (!res) {
+      this.setState({
+        veriError: '未识别到有效核销码，请重试'
+      })
+      return
+    }
     requestCallback(
       async () => {
         const data = await api.order.qrwriteoff({
@@ -432,7 +452,11 @@ export default class ActionModal extends PureComponent {
       '核销订单成功',
       ({ order_id }) => {
         this.handleClose()
-        Taro.navigateTo({ url: `/pages/order/detail?order_id=${order_id}` })
+        if (orderInfo?.order_id && String(orderInfo.order_id) === String(order_id)) {
+          onRefresh?.()
+        } else {
+          Taro.navigateTo({ url: `/pages/order/detail?order_id=${order_id}` })
+        }
       },
       () => {
         this.setState({
@@ -447,7 +471,7 @@ export default class ActionModal extends PureComponent {
 
     return (
       <View className={classNames('action-modal')}>
-        <AtModal isOpened={visible} onClose={onClose}>
+        <AtModal isOpened={visible} closeOnClickOverlay={false} onClose={onClose}>
           {this.renderContent()}
           {this.renderAction()}
         </AtModal>

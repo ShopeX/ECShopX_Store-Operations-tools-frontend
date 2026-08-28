@@ -63,21 +63,23 @@ export default class OrderDeal extends PureComponent {
       await this.getAddressDetail()
     }
 
+    const orderPoint = afterSalesInfo.order_info?.point ?? orderCancelInfo.point ?? 0
     let price = isNull(afterSalesInfo.refund_fee)
-      ? toFixed(orderCancelInfo.total_fee)
+      ? toFixed(orderCancelInfo.total_fee || 0)
       : toFixed(afterSalesInfo.refund_fee)
-    let point = isNull(afterSalesInfo.refund_point)
-      ? orderCancelInfo.point
-      : afterSalesInfo.refund_point
+    let point = isNull(afterSalesInfo.refund_point) ? orderPoint : afterSalesInfo.refund_point
+    const maxPoint = isNull(afterSalesInfo.refund_point) ? orderPoint : afterSalesInfo.refund_point
+    const maxPrice = Number(price)
+    price = Number.isNaN(maxPrice) ? '0.00' : price
 
     this.setState({
       afterSalesInfo,
       status: afterSalesInfo.aftersales_type,
       price: {
         price,
-        point,
-        maxPrice: Number(price),
-        maxPoint: point,
+        point: Number(point) || 0,
+        maxPrice: Number.isNaN(maxPrice) ? 0 : maxPrice,
+        maxPoint: Number(maxPoint) || 0,
         priceError: false,
         pointError: false
       }
@@ -142,18 +144,28 @@ export default class OrderDeal extends PureComponent {
     })
   }
 
+  parseInputNumber = (value) => {
+    if (value === '' || value === null || value === undefined) {
+      return ''
+    }
+    const num = Number(value)
+    return Number.isNaN(num) ? '' : num
+  }
+
   handleChangePrice = (price) => {
+    const normalizedPrice = this.parseInputNumber(price)
     this.setState(
       {
         price: {
           ...this.state.price,
-          price: Number(price)
+          price: normalizedPrice
         }
       },
       () => {
         if (
-          (Number(price) > 0 && this.state.price.maxPrice !== 0) ||
-          Number(price) <= this.state.price.maxPrice
+          normalizedPrice === '' ||
+          (normalizedPrice > 0 && this.state.price.maxPrice !== 0) ||
+          normalizedPrice <= this.state.price.maxPrice
         ) {
           this.setState({
             price: {
@@ -167,17 +179,19 @@ export default class OrderDeal extends PureComponent {
   }
 
   handleChangePoint = (point) => {
+    const normalizedPoint = this.parseInputNumber(point)
     this.setState(
       {
         price: {
           ...this.state.price,
-          point: Number(point)
+          point: normalizedPoint
         }
       },
       () => {
         if (
-          (Number(point) > 0 && this.state.price.maxPoint !== 0) ||
-          Number(point) <= this.state.price.maxPoint
+          normalizedPoint === '' ||
+          (normalizedPoint > 0 && this.state.price.maxPoint !== 0) ||
+          normalizedPoint <= this.state.price.maxPoint
         ) {
           this.setState({
             price: {
@@ -241,8 +255,8 @@ export default class OrderDeal extends PureComponent {
           ...params,
           is_approved: isApprove ? 1 : 0,
           refuse_reason: isApprove ? undefined : refuseReason,
-          refund_fee: hundred(price.price),
-          refund_point: price.point
+          refund_fee: hundred(price.price === '' ? 0 : price.price),
+          refund_point: price.point === '' ? 0 : price.point
         }
       } else if (isValid.status === 'REFUND_GOODS0') {
         params = {
@@ -256,8 +270,8 @@ export default class OrderDeal extends PureComponent {
           ...params,
           check_refund: isApprove ? 1 : 0,
           refund_memo: isApprove ? undefined : refuseReason,
-          refund_fee: hundred(price.price),
-          refund_point: price.point
+          refund_fee: hundred(price.price === '' ? 0 : price.price),
+          refund_point: price.point === '' ? 0 : price.point
         }
       }
     }
@@ -290,7 +304,7 @@ export default class OrderDeal extends PureComponent {
     if (status === 'ONLY_REFUND' || (status === 'REFUND_GOODS' && afterSalesInfo.progress === 2)) {
       //如果是同意
       if (isApprove) {
-        if (price.price === 0 && price.maxPrice !== 0) {
+        if ((price.price === '' || price.price === 0) && price.maxPrice !== 0) {
           this.setState({
             price: {
               ...price,
@@ -298,7 +312,7 @@ export default class OrderDeal extends PureComponent {
             }
           })
           return
-        } else if (price.point === 0 && price.maxPoint !== 0) {
+        } else if ((price.point === '' || price.point === 0) && price.maxPoint !== 0) {
           this.setState({
             price: {
               ...price,
@@ -397,7 +411,7 @@ export default class OrderDeal extends PureComponent {
                     </View>
                   </View>
                   <View className='form-price marginTop20'>
-                    <View className='labelc'>退款积分（分）</View>
+                    <View className='labelc'>退款积分</View>
                     <View className='value'>
                       <SpInputNumber
                         placeholder='请填写积分'

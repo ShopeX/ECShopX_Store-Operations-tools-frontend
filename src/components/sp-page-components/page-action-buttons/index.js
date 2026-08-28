@@ -83,9 +83,8 @@ class PageActionButtons extends PureComponent {
     return height
   }
   //根据按钮的位置和类型获得按钮的风格
-  buttonType = (buttonName, buttonIndex, buttons) => {
-    //如果是最后一个 按钮类型为
-    if (buttonName === '取消订单') {
+  buttonType = (button, buttonIndex, buttons) => {
+    if (button.type === 'cancel') {
       return 'danger'
     }
     if (buttonIndex === buttons.length - 1) {
@@ -116,7 +115,7 @@ class PageActionButtons extends PureComponent {
           onClick={this.handleFooterButtonClick.bind(this, buttonType)}
           size='small'
           // height={this.buttonHeight()}
-          type={this.buttonType(buttonName, index, actionButtons)}
+          type={this.buttonType(button, index, actionButtons)}
         />
       )
     })

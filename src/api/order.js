@@ -82,9 +82,14 @@ export function writeoff({ orderId, ...params }) {
   return req.post(`/writeoff/${orderId}`, params)
 }
 
-//订单核销
+//订单扫码核销
 export function qrwriteoff(params) {
   return req.post(`/qr_writeoff`, params)
+}
+
+// 订单券核销
+export function discountCardConsume(params) {
+  return req.post('/order/discountcard/consume', params)
 }
 //获取取消订单信息
 export function getcancelinfo(params) {

@@ -48,7 +48,7 @@ export default class SpInputNumber extends PureComponent {
 
   clearValue = () => {
     const { onChange = () => {} } = this.props
-    onChange(0)
+    onChange('')
   }
 
   render() {

@@ -68,17 +68,55 @@ class QWSDK {
     this._isWebView = false
     this._url = ''
     this._isAndroid = !isIos()
+    this._isRun = false
   }
+
+  /** 安卓可能返回 "QR_CODE,内容" / "CODE_128,内容"，统一取码内容 */
+  normalizeScanResult(raw) {
+    if (raw == null) return ''
+    const text = String(raw).trim()
+    if (!text) return ''
+    if (/^[A-Z0-9_]{2,32},.+/.test(text)) {
+      return text.substring(text.indexOf(',') + 1)
+    }
+    return text
+  }
+
   async register({ url }) {
+    // 安卓扫码返回页时会触发 componentDidShow → 再次 register，
+    // 新的 wx.config 会打断尚未结束的 scanQRCode 回调，导致扫完无反应
+    if (this._isRun) {
+      console.log('QWSDK:register: skip while scanning')
+      return
+    }
     // // console.log('QWSDK:register:url', url)
     // // console.log('QWSDK:register:webView-url', this._url)
     // // console.log('this._isWebView && this._isAndroid', this._isWebView, this._isAndroid)
     if (this._isWebView && this._isAndroid) url = this._url //location.href.split('#')[0]
     // console.log('QWSDK:register:post-url', url)
-    const jssdkConfig = await api.auth.getQwJsSdkConfig({
-      url
-    })
+    let jssdkConfig
+    try {
+      jssdkConfig = await api.auth.getQwJsSdkConfig({
+        url
+      })
+    } catch (e) {
+      console.warn('QWSDK:register: 获取 jssdk 配置失败', e)
+      return
+    }
     console.log('QWSDK:register:jssdkConfig2', jssdkConfig)
+
+    if (!jssdkConfig?.appId) {
+      console.warn(
+        'QWSDK:register: jssdk 配置无效，请检查 .env 中 APP_BASE_URL 是否已配置，以及是否已登录'
+      )
+      return
+    }
+
+    // 扫码过程中接口返回，仍跳过 config，避免打断回调
+    if (this._isRun) {
+      console.log('QWSDK:register: skip config while scanning')
+      return
+    }
 
     const { appId, timestamp, nonceStr, signature } = jssdkConfig
     // eslint-disable-next-line no-undef
@@ -112,27 +150,71 @@ class QWSDK {
     const that = this
     that.set('_isRun', true)
     console.log('scanQRCode')
+    if (typeof wx === 'undefined' || !wx.scanQRCode) {
+      that.set('_isRun', false)
+      return Promise.reject(new Error('当前环境不支持企微扫码，请在企业微信内打开'))
+    }
     return new Promise((resolve, reject) => {
+      let settled = false
+      const done = (fn, value) => {
+        if (settled) return
+        settled = true
+        clearTimeout(safetyTimer)
+        that.set('_isRun', false)
+        fn(value)
+      }
+      // 部分安卓机扫码窗关闭后不回调，避免 _isRun 永久卡住后续 register
+      const safetyTimer = setTimeout(() => {
+        console.warn('scanQRCode: safety timeout')
+        done(reject, { errMsg: 'scanQRCode:timeout' })
+      }, 90000)
+
       wx.scanQRCode({
         desc: 'scanQRCode desc',
         needResult: 1, // 默认为0，扫描结果由企业微信处理，1则直接返回扫描结果，
         scanType: ['qrCode', 'barCode'], // 可以指定扫二维码还是条形码（一维码），默认二者都有
         success: function (res) {
           console.log('scanQRCode:success:res', res)
-          if (that._isWebView && that._isAndroid) {
+          const raw = res?.resultStr || res?.result || ''
+          const ok = !res?.errMsg || String(res.errMsg).indexOf('scanQRCode:ok') !== -1
+          // 安卓 WebView：先落盘，防止页面刷新后丢失结果
+          if (that._isAndroid && raw) {
+            try {
+              Taro.setStorageSync('QWSDK_SCAN_RESULT', raw)
+            } catch (e) {}
           }
-          if (res.errMsg == 'scanQRCode:ok') {
-            resolve(res.resultStr)
+          const finish = () => {
+            if (!ok && !raw) {
+              done(reject, res)
+              return
+            }
+            const code = that.normalizeScanResult(raw)
+            try {
+              Taro.removeStorageSync('QWSDK_SCAN_RESULT')
+            } catch (e) {}
+            done(resolve, code)
+          }
+          // 安卓上同步处理 success 业务逻辑偶发不执行，延迟交付结果
+          if (that._isAndroid) {
+            setTimeout(finish, 300)
           } else {
-            reject(res)
+            finish()
           }
+        },
+        fail: function (res) {
+          console.log('scanQRCode:fail:res', res)
+          done(reject, res)
         },
         error: function (res) {
           console.log('scanQRCode:error:res', res)
-          if (res.errMsg.indexOf('function_not_exist') > 0) {
+          if (res?.errMsg && res.errMsg.indexOf('function_not_exist') > 0) {
             alert('版本过低请升级')
           }
-          reject(res)
+          done(reject, res)
+        },
+        cancel: function (res) {
+          console.log('scanQRCode:cancel:res', res)
+          done(reject, res || { errMsg: 'scanQRCode:cancel' })
         }
       })
     })

@@ -6,6 +6,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { getThemeStyle, timestampToTime, calcTimer } from '@/utils'
+import { normalizeCouponOrderInfo } from '@/utils/order'
 import { SpGoodItem, SpGoodPrice, SpToast, SpLoading, SpRemarkItem } from '@/components'
 import {
   DetailCard,
@@ -86,7 +87,7 @@ class OrderDetail extends Component {
     }
 
     this.setState({
-      orderInfo,
+      orderInfo: normalizeCouponOrderInfo(orderInfo),
       tradeInfo,
       squareRoot:
         orderInfo.order_status == 'NOTPAY' &&
@@ -368,7 +369,7 @@ class OrderDetail extends Component {
         console.log('this.state.orderInfo.total_fee:', this.state.orderInfo)
         if (_orderInfo.total_fee != this.state.orderInfo.total_fee) {
           this.setState({
-            orderInfo: _orderInfo,
+            orderInfo: normalizeCouponOrderInfo(_orderInfo),
             tradeInfo: _tradeInfo
           })
           clearInterval(this.timer)
@@ -744,6 +745,7 @@ class OrderDetail extends Component {
             showPrintPdf
             orderInfo={orderInfo}
             onClick={this.handleClickButton.bind(this)}
+            onRefresh={this.handleRefresh}
           />
         </FixedAction>
       </View>
